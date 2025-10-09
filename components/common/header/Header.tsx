@@ -27,7 +27,7 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import LoginForm from "@/app/auth/LoginForm";
 import RegisterForm from "@/app/auth/RegisterForm";
 import LogoutButton from "@/app/auth/LogoutButton";
-import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
     RiMenu2Fill,
 } from "react-icons/ri";
@@ -54,7 +54,7 @@ const Header = () => {
                                 </SheetTrigger>
                                 <SheetContent side="left" className="flex flex-col px-6 py-6 h-full w-[300px]">
                                     <SheetHeader>
-                                        Category
+                                        <SheetTitle>Category</SheetTitle>
                                     </SheetHeader>
                                     <Nav />
                                 </SheetContent>
