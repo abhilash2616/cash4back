@@ -24,7 +24,7 @@ const Banner = () => {
                 options={{
                     perPage: 3,
                     gap: "1rem",
-                    padding: { left: "6rem", right: "2rem" },
+                    padding: { left: "2rem", right: "1rem" },
                     autoplay: false,
                     interval: 5000,
                     pauseOnHover: true,

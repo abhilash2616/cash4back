@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import AutoBreadcrumb from '@/components/common/AutoBreadcrumb';
@@ -31,15 +30,8 @@ interface Coupon {
     isActive: boolean;
 }
 
-const CategoryDetailPage = () => {
-    const params = useParams();
-    const categoryId = params.categoryId as string;
-    const [stores, setStores] = useState<Store[]>([]);
-    const [coupons, setCoupons] = useState<Coupon[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    // Category data mapping
-    const categoryData: { [key: string]: { name: string; description: string; icon: string } } = {
+// Category data mapping
+const categoryData: { [key: string]: { name: string; description: string; icon: string } } = {
         'biggest-sales': { name: 'Biggest Sales', description: 'Get the best deals with maximum cashback', icon: '🔥' },
         'electronics': { name: 'Mobiles & Electronics', description: 'Latest gadgets with amazing cashback offers', icon: '📱' },
         'fashion': { name: 'Fashion', description: 'Trendy fashion with great savings', icon: '👗' },
@@ -56,6 +48,13 @@ const CategoryDetailPage = () => {
         'health-wellness': { name: 'Health & Wellness', description: 'Health and wellness products', icon: '🏥' },
         'departmental': { name: 'Departmental', description: 'Departmental store offers', icon: '🏪' },
     };
+
+const CategoryDetailPage = () => {
+    const params = useParams();
+    const categoryId = params.categoryId as string;
+    const [stores, setStores] = useState<Store[]>([]);
+    const [coupons, setCoupons] = useState<Coupon[]>([]);
+    const [loading, setLoading] = useState(true);
 
     const currentCategory = categoryData[categoryId] || { name: 'Category', description: 'Category description', icon: '📦' };
 
@@ -78,7 +77,7 @@ const CategoryDetailPage = () => {
     };
 
     // Mock data for stores
-    const mockStores: Store[] = [
+    const mockStores: Store[] = React.useMemo(() => [
         {
             id: 'amazon',
             name: 'Amazon',
@@ -103,7 +102,7 @@ const CategoryDetailPage = () => {
             id: 'myntra',
             name: 'Myntra',
             logo: '👗',
-            cashbackRate: 'Up to 6%',
+            cashbackRate: 'Up to 8%',
             category: categoryId,
             isVerified: true,
             description: 'Fashion and lifestyle shopping',
@@ -113,11 +112,21 @@ const CategoryDetailPage = () => {
             id: 'ajio',
             name: 'Ajio',
             logo: '🛍️',
-            cashbackRate: 'Up to 8%',
+            cashbackRate: 'Up to 7%',
             category: categoryId,
             isVerified: true,
             description: 'Trendy fashion for everyone',
             featured: false
+        },
+        {
+            id: 'reliance-digital',
+            name: 'Reliance Digital',
+            logo: '📺',
+            cashbackRate: 'Up to 5%',
+            category: categoryId,
+            isVerified: true,
+            description: 'Electronics and digital products',
+            featured: true
         },
         {
             id: 'nykaa',
@@ -139,41 +148,41 @@ const CategoryDetailPage = () => {
             description: 'Kids and baby products',
             featured: false
         }
-    ];
+    ], [categoryId]);
 
     // Mock data for coupons
-    const mockCoupons: Coupon[] = [
+    const mockCoupons: Coupon[] = React.useMemo(() => [
         {
-            id: '1',
-            title: `${currentCategory.name} Special Offer`,
-            description: `Get amazing discounts on ${currentCategory.name.toLowerCase()} products`,
-            code: 'SAVE20',
-            discount: '20% OFF',
+            id: 'amazon-electronics-sale',
+            title: 'Electronics Sale',
+            description: 'Get extra 10% off on all electronics including smartphones, laptops, tablets, and more',
+            code: 'AMAZON10',
+            discount: '10%',
             store: 'Amazon',
-            expiryDate: '2024-02-15',
+            expiryDate: '2024-12-31',
             isActive: true
         },
         {
-            id: '2',
-            title: 'First Order Discount',
-            description: 'Special discount for first-time users',
-            code: 'FIRST15',
-            discount: '15% OFF',
+            id: 'flipkart-big-billion',
+            title: 'Big Billion Days',
+            description: 'Massive savings during Flipkart\'s biggest sale event. Up to 80% off on thousands of products',
+            code: 'BIGBILLION',
+            discount: '80%',
             store: 'Flipkart',
-            expiryDate: '2024-02-10',
+            expiryDate: '2024-12-31',
             isActive: true
         },
         {
-            id: '3',
-            title: 'Weekend Sale',
-            description: 'Weekend special offers',
-            code: 'WEEKEND25',
-            discount: '25% OFF',
+            id: 'myntra-fashion-sale',
+            title: 'End of Reason Sale',
+            description: 'Fashion lovers rejoice! Get up to 70% off on your favorite fashion brands',
+            code: 'EORS70',
+            discount: '70%',
             store: 'Myntra',
-            expiryDate: '2024-01-30',
-            isActive: false
+            expiryDate: '2024-12-31',
+            isActive: true
         }
-    ];
+    ], []);
 
     useEffect(() => {
         // Simulate API call
@@ -182,7 +191,7 @@ const CategoryDetailPage = () => {
             setCoupons(mockCoupons);
             setLoading(false);
         }, 1000);
-    }, [categoryId]);
+    }, [categoryId, mockStores, mockCoupons]);
 
     if (loading) {
         return (
@@ -312,7 +321,8 @@ const CategoryDetailPage = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {coupons.map((coupon) => (
-                            <div key={coupon.id} className={`bg-white rounded-lg shadow-md p-6 ${!coupon.isActive ? 'opacity-50' : ''}`}>
+                            <Link key={coupon.id} href={`/coupons/${coupon.id}`}>
+                                <div className={`bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer ${!coupon.isActive ? 'opacity-50' : ''}`}>
                                 <div className="flex items-start justify-between mb-4">
                                     <div>
                                         <h3 className="text-lg font-semibold text-gray-900 mb-1">{coupon.title}</h3>
@@ -347,7 +357,8 @@ const CategoryDetailPage = () => {
                                         <span className="text-red-600 text-sm font-medium">Expired</span>
                                     </div>
                                 )}
-                            </div>
+                                </div>
+                            </Link>
                         ))}
                     </div>
                 </section>

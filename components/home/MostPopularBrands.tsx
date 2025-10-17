@@ -55,7 +55,7 @@ const MostPopularBrands = () => {
           perPage: 6,
           gap: "1rem",
           rewind: true,
-          padding: { left: "6rem", right: "2rem" },
+          padding: { left: "2rem", right: "1rem" },
           pagination: false,
           autoplay: false,
           breakpoints: {
