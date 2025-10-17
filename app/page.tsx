@@ -11,7 +11,7 @@ import HowCash4BackWork from "@/components/home/HowCash4BackWork"
 import MostPopularBrands from "@/components/home/MostPopularBrands"
 import PopularStoresCategories from "@/components/home/PopularStoresCategories"
 import Superstars from "@/components/home/Superstars"
-import TabLink from "@/components/home/TabLink"
+// import TabLink from "@/components/home/TabLink"
 import Image from "next/image"
 import Link from "next/link"
 
