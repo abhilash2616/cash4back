@@ -8,6 +8,24 @@ import { Skeleton } from '@/components/ui/skeleton';
 import StoreCardSkeleton from '@/components/skeleton/StoreCardSkeleton';
 import CouponCardSkeleton from '@/components/skeleton/CouponCardSkeleton';
 import { useScrollDisable } from '@/hooks/useScrollDisable';
+import {
+    Flame,
+    Smartphone,
+    Shirt,
+    Home,
+    DollarSign,
+    CreditCard,
+    Sparkles,
+    Plane,
+    ShoppingCart,
+    Pill,
+    Star,
+    BookOpen,
+    Building2,
+    Heart,
+    Store
+} from 'lucide-react';
+import Image from 'next/image';
 
 interface Store {
     id: string;
@@ -32,22 +50,22 @@ interface Coupon {
 }
 
 // Category data mapping
-const categoryData: { [key: string]: { name: string; description: string; icon: string } } = {
-    'biggest-sales': { name: 'Biggest Sales', description: 'Get the best deals with maximum cashback', icon: '🔥' },
-    'electronics': { name: 'Mobiles & Electronics', description: 'Latest gadgets with amazing cashback offers', icon: '📱' },
-    'fashion': { name: 'Fashion', description: 'Trendy fashion with great savings', icon: '👗' },
-    'home-kitchen': { name: 'Home & Kitchen', description: 'Everything for your home with cashback', icon: '🏠' },
-    'min-cashback': { name: 'Min 50% Cashback', description: 'Minimum 50% cashback on all purchases', icon: '💰' },
-    'banking-finance': { name: 'Credit Cards', description: 'Best credit card offers and deals', icon: '💳' },
-    'beauty-grooming': { name: 'Beauty & Grooming', description: 'Beauty products with exclusive offers', icon: '💄' },
-    'travel': { name: 'Flights & Hotels', description: 'Travel deals with maximum savings', icon: '✈️' },
-    'food-grocery': { name: 'Food & Grocery', description: 'Daily essentials with cashback', icon: '🛒' },
-    'pharmacy': { name: 'Pharmacy', description: 'Health products with great offers', icon: '💊' },
-    'new-on-ck': { name: 'New on CashKaro', description: 'Latest additions to our platform', icon: '🆕' },
-    'education': { name: 'Education', description: 'Educational courses and materials', icon: '📚' },
-    'loans': { name: 'Loans', description: 'Best loan offers and deals', icon: '🏦' },
-    'health-wellness': { name: 'Health & Wellness', description: 'Health and wellness products', icon: '🏥' },
-    'departmental': { name: 'Departmental', description: 'Departmental store offers', icon: '🏪' },
+const categoryData: { [key: string]: { name: string; description: string; icon: React.ComponentType<{ className?: string }> } } = {
+    'biggest-sales': { name: 'Biggest Sales', description: 'Get the best deals with maximum cashback', icon: Flame },
+    'electronics': { name: 'Mobiles & Electronics', description: 'Latest gadgets with amazing cashback offers', icon: Smartphone },
+    'fashion': { name: 'Fashion', description: 'Trendy fashion with great savings', icon: Shirt },
+    'home-kitchen': { name: 'Home & Kitchen', description: 'Everything for your home with cashback', icon: Home },
+    'min-cashback': { name: 'Min 50% Cashback', description: 'Minimum 50% cashback on all purchases', icon: DollarSign },
+    'banking-finance': { name: 'Credit Cards', description: 'Best credit card offers and deals', icon: CreditCard },
+    'beauty-grooming': { name: 'Beauty & Grooming', description: 'Beauty products with exclusive offers', icon: Sparkles },
+    'travel': { name: 'Flights & Hotels', description: 'Travel deals with maximum savings', icon: Plane },
+    'food-grocery': { name: 'Food & Grocery', description: 'Daily essentials with cashback', icon: ShoppingCart },
+    'pharmacy': { name: 'Pharmacy', description: 'Health products with great offers', icon: Pill },
+    'new-on-ck': { name: 'New on CashKaro', description: 'Latest additions to our platform', icon: Star },
+    'education': { name: 'Education', description: 'Educational courses and materials', icon: BookOpen },
+    'loans': { name: 'Loans', description: 'Best loan offers and deals', icon: Building2 },
+    'health-wellness': { name: 'Health & Wellness', description: 'Health and wellness products', icon: Heart },
+    'departmental': { name: 'Departmental', description: 'Departmental store offers', icon: Store },
 };
 
 const CategoryDetailPage = () => {
@@ -60,7 +78,7 @@ const CategoryDetailPage = () => {
     // Disable scroll when loading
     useScrollDisable(loading);
 
-    const currentCategory = categoryData[categoryId] || { name: 'Category', description: 'Category description', icon: '📦' };
+    const currentCategory = categoryData[categoryId] || { name: 'Category', description: 'Category description', icon: Store };
 
     const customLabels = {
         'biggest-sales': 'Biggest Sales',
@@ -85,7 +103,7 @@ const CategoryDetailPage = () => {
         {
             id: 'amazon',
             name: 'Amazon',
-            logo: '🛒',
+            logo: '/assets/img/brands/amazon.jpg',
             cashbackRate: 'Up to 5%',
             category: categoryId,
             isVerified: true,
@@ -95,7 +113,7 @@ const CategoryDetailPage = () => {
         {
             id: 'flipkart',
             name: 'Flipkart',
-            logo: '📱',
+            logo: '/assets/img/brands/flipkart.png',
             cashbackRate: 'Up to 4%',
             category: categoryId,
             isVerified: true,
@@ -105,7 +123,7 @@ const CategoryDetailPage = () => {
         {
             id: 'myntra',
             name: 'Myntra',
-            logo: '👗',
+            logo: '/assets/img/brands/myntra.jpg',
             cashbackRate: 'Up to 8%',
             category: categoryId,
             isVerified: true,
@@ -115,7 +133,7 @@ const CategoryDetailPage = () => {
         {
             id: 'ajio',
             name: 'Ajio',
-            logo: '🛍️',
+            logo: '/assets/img/brands/ajio-coupons.jpg',
             cashbackRate: 'Up to 7%',
             category: categoryId,
             isVerified: true,
@@ -125,7 +143,7 @@ const CategoryDetailPage = () => {
         {
             id: 'reliance-digital',
             name: 'Reliance Digital',
-            logo: '📺',
+            logo: '/assets/img/brands/reliancedigital-coupons.png',
             cashbackRate: 'Up to 5%',
             category: categoryId,
             isVerified: true,
@@ -135,7 +153,7 @@ const CategoryDetailPage = () => {
         {
             id: 'nykaa',
             name: 'Nykaa',
-            logo: '💄',
+            logo: '/assets/img/brands/mama-earth-coupons-hide.jpg',
             cashbackRate: 'Up to 7%',
             category: categoryId,
             isVerified: true,
@@ -145,7 +163,7 @@ const CategoryDetailPage = () => {
         {
             id: 'firstcry',
             name: 'FirstCry',
-            logo: '👶',
+            logo: '/assets/img/brands/firstcry.jpg',
             cashbackRate: 'Up to 9%',
             category: categoryId,
             isVerified: true,
@@ -266,7 +284,9 @@ const CategoryDetailPage = () => {
             <div className="bg-white shadow-sm">
                 <div className="container mx-auto px-4 py-8">
                     <div className="flex items-center space-x-4 mb-4">
-                        <span className="text-4xl">{currentCategory.icon}</span>
+                        <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <currentCategory.icon className="w-6 h-6 text-blue-600" />
+                        </div>
                         <div>
                             <h1 className="text-3xl font-bold text-gray-900">{currentCategory.name}</h1>
                             <p className="text-gray-600 mt-2">{currentCategory.description}</p>
@@ -291,8 +311,14 @@ const CategoryDetailPage = () => {
                             <Link key={store.id} href={`/stores/${store.id}`}>
                                 <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer group">
                                     <div className="flex items-center justify-between mb-4">
-                                        <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-2xl">
-                                            {store.logo}
+                                        <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                                            <Image
+                                                src={store.logo}
+                                                alt={store.name}
+                                                width={64}
+                                                height={64}
+                                                className="w-full h-full object-contain"
+                                            />
                                         </div>
                                         {store.isVerified && (
                                             <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">

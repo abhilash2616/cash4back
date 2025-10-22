@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import AutoBreadcrumb from '@/components/common/AutoBreadcrumb';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -41,7 +42,7 @@ const mockStores: { [key: string]: Store } = {
     'amazon': {
         id: 'amazon',
         name: 'Amazon',
-        logo: '🛒',
+        logo: '/assets/img/brands/amazon.jpg',
         cashbackRate: 'Up to 5%',
         category: 'general',
         isVerified: true,
@@ -57,7 +58,7 @@ const mockStores: { [key: string]: Store } = {
     'flipkart': {
         id: 'flipkart',
         name: 'Flipkart',
-        logo: '📱',
+        logo: '/assets/img/brands/flipkart.png',
         cashbackRate: 'Up to 4%',
         category: 'general',
         isVerified: true,
@@ -73,7 +74,7 @@ const mockStores: { [key: string]: Store } = {
     'myntra': {
         id: 'myntra',
         name: 'Myntra',
-        logo: '👗',
+        logo: '/assets/img/brands/myntra.jpg',
         cashbackRate: 'Up to 8%',
         category: 'fashion',
         isVerified: true,
@@ -89,7 +90,7 @@ const mockStores: { [key: string]: Store } = {
     'ajio': {
         id: 'ajio',
         name: 'Ajio',
-        logo: '🛍️',
+        logo: '/assets/img/brands/ajio-coupons.jpg',
         cashbackRate: 'Up to 7%',
         category: 'fashion',
         isVerified: true,
@@ -105,7 +106,7 @@ const mockStores: { [key: string]: Store } = {
     'reliance-digital': {
         id: 'reliance-digital',
         name: 'Reliance Digital',
-        logo: '📺',
+        logo: '/assets/img/brands/reliancedigital-coupons.png',
         cashbackRate: 'Up to 5%',
         category: 'electronics',
         isVerified: true,
@@ -121,7 +122,7 @@ const mockStores: { [key: string]: Store } = {
     'nykaa': {
         id: 'nykaa',
         name: 'Nykaa',
-        logo: '💄',
+        logo: '/assets/img/brands/mama-earth-coupons-hide.jpg',
         cashbackRate: 'Up to 7%',
         category: 'beauty',
         isVerified: true,
@@ -137,7 +138,7 @@ const mockStores: { [key: string]: Store } = {
     'firstcry': {
         id: 'firstcry',
         name: 'FirstCry',
-        logo: '👶',
+        logo: '/assets/img/brands/firstcry.jpg',
         cashbackRate: 'Up to 9%',
         category: 'kids',
         isVerified: true,
@@ -286,8 +287,14 @@ const StoreDetailPage = () => {
             <div className="bg-white shadow-sm">
                 <div className="container mx-auto px-4 py-8">
                     <div className="flex items-center space-x-6 mb-4">
-                        <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center text-3xl">
-                            {store.logo}
+                        <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                            <Image
+                                src={store.logo}
+                                alt={store.name}
+                                width={80}
+                                height={80}
+                                className="w-full h-full object-contain"
+                            />
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center space-x-3 mb-2">

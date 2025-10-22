@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import AutoBreadcrumb from '@/components/common/AutoBreadcrumb';
+import { DollarSign, Store, Target } from 'lucide-react';
 
 const CategoriesPage = () => {
     const [activeTab, setActiveTab] = useState('all');
@@ -101,7 +102,7 @@ const CategoriesPage = () => {
                     {/* Main Heading with Dropdown */}
                     <div className="flex items-center justify-between mb-6">
                         <h1 className="text-2xl font-bold text-gray-900">Home Categories</h1>
-                        
+
                         {/* Sort Dropdown */}
                         <div className="relative" ref={dropdownRef}>
                             <button
@@ -115,7 +116,7 @@ const CategoriesPage = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
-                            
+
                             {isDropdownOpen && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
                                     {sortOptions.map((option) => (
@@ -125,9 +126,8 @@ const CategoriesPage = () => {
                                                 setSortBy(option.value);
                                                 setIsDropdownOpen(false);
                                             }}
-                                            className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors ${
-                                                sortBy === option.value ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
-                                            }`}
+                                            className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors ${sortBy === option.value ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                                                }`}
                                         >
                                             {option.label}
                                         </button>
@@ -144,11 +144,10 @@ const CategoriesPage = () => {
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-                                        activeTab === tab.id
-                                            ? 'border-blue-500 text-blue-600'
-                                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                                    }`}
+                                    className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
+                                        ? 'border-blue-500 text-blue-600'
+                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                        }`}
                                 >
                                     {tab.label}
                                     <span className="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs">
@@ -228,7 +227,7 @@ const CategoriesPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="text-center">
                             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span className="text-2xl">💰</span>
+                                <DollarSign className="w-8 h-8 text-green-600" />
                             </div>
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">Maximum Cashback</h3>
                             <p className="text-gray-600">Get up to 9% cashback on your purchases across all categories</p>
@@ -236,7 +235,7 @@ const CategoriesPage = () => {
 
                         <div className="text-center">
                             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span className="text-2xl">🏪</span>
+                                <Store className="w-8 h-8 text-blue-600" />
                             </div>
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">Verified Stores</h3>
                             <p className="text-gray-600">All our partner stores are verified and trusted by millions of users</p>
@@ -244,35 +243,11 @@ const CategoriesPage = () => {
 
                         <div className="text-center">
                             <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span className="text-2xl">🎯</span>
+                                <Target className="w-8 h-8 text-purple-600" />
                             </div>
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">Best Deals</h3>
                             <p className="text-gray-600">Exclusive deals and coupons available only through our platform</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* CTA Section */}
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-16">
-                <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-3xl font-bold text-white mb-4">Ready to Start Saving?</h2>
-                    <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                        Join thousands of users who are already saving money with our cashback platform.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link
-                            href="/auth/register"
-                            className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-                        >
-                            Sign Up Free
-                        </Link>
-                        <Link
-                            href="/stores"
-                            className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
-                        >
-                            Browse Stores
-                        </Link>
                     </div>
                 </div>
             </div>
