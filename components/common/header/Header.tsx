@@ -4,13 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
-    Dialog,
-    DialogTrigger,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
-import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
@@ -18,32 +11,56 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { RiLogoutCircleLine } from "react-icons/ri";
-import { TbSettings2 } from "react-icons/tb";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TbUserSquareRounded } from "react-icons/tb";
 import { useAuth } from "@/context/AuthProvider";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import LoginForm from "@/app/auth/LoginForm";
-import RegisterForm from "@/app/auth/RegisterForm";
 import LogoutButton from "@/app/auth/LogoutButton";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
     RiMenu2Fill,
 } from "react-icons/ri";
-import { Search } from "lucide-react";
+import { LogInIcon, Search } from "lucide-react";
 import { motion } from "motion/react"
-import Nav from "./Nav";
+import Nav from "@/components/common/header/Nav";
 
 
 const Header = () => {
     const { user } = useAuth();
-    const [isLoginOpen, setIsLoginOpen] = useState(false);
-    const [isRegisterOpen, setIsRegisterOpen] = useState(false);
     const [searchFocused, setSearchFocused] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Always show loading state on server, only show auth state after hydration
+    if (!mounted) {
+        return (
+            <header className="sticky top-0 z-50 w-full bg-white shadow-lg">
+                <div className="container mx-auto px-4">
+                    <div className="hidden lg:flex items-center justify-between gap-6 py-2">
+                        <div className="flex">
+                            <div className="flex items-center gap-x-8">
+                                <div className="p-2 rounded-md">
+                                    <div className="w-6 h-6 bg-gray-200 rounded animate-pulse"></div>
+                                </div>
+                                <div>
+                                    <div className="w-24 h-6 bg-gray-200 rounded animate-pulse"></div>
+                                </div>
+                                <div className="w-64 h-8 bg-gray-200 rounded-full animate-pulse"></div>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-x-4">
+                            <div className="h-9 w-24 bg-gray-200 rounded-full animate-pulse"></div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        );
+    }
 
     return (
-        <header className="sticky top-0 z-50 w-full bg-white shadow-lg">
+        <header className="sticky top-0 z-40 w-full bg-white shadow-lg">
             <div className="container mx-auto px-4">
                 <div className="hidden lg:flex items-center justify-between gap-6 py-2">
                     <div className="flex">
@@ -52,7 +69,7 @@ const Header = () => {
                                 <SheetTrigger className="p-2 rounded-md hover:bg-gray-100 hover:cursor-pointer">
                                     <RiMenu2Fill className="text-2xl text-[#1E2C1E]" />
                                 </SheetTrigger>
-                                <SheetContent side="left" className="flex flex-col px-6 py-6 h-full w-[300px]">
+                                <SheetContent side="left" className="flex flex-col px-6 py-6 h-full w-[400px] overflow-visible">
                                     <SheetHeader>
                                         <SheetTitle>Category</SheetTitle>
                                     </SheetHeader>
@@ -88,51 +105,15 @@ const Header = () => {
                     <div className="flex items-center gap-x-4">
                         {!user ? (
                             <>
-                                {/* Login */}
-                                <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
-                                    <DialogTrigger asChild>
-                                        <Button
-                                            className="text-white text-[14px] font-normal inline-flex gap-x-2 bg-[#1A2819] shadow-md shadow-gray-500/30 px-6 py-2 rounded-full hover:brightness-110 transition-all duration-200"
-                                            onClick={() => setIsLoginOpen(true)}
-                                        >
-                                            <RiLogoutCircleLine />
-                                            Login
-                                        </Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="bg-[#F4FFF9] border border-[#1E2C1E] text-white rounded-2xl w-[90%] max-w-[800px]">
-                                        <DialogHeader>
-                                            <VisuallyHidden>
-                                                <DialogTitle>Login</DialogTitle>
-                                            </VisuallyHidden>
-                                        </DialogHeader>
-                                        <LoginForm
-                                            onClose={() => setIsLoginOpen(false)}
-                                        // 🔹 OTP API comment preserved inside LoginForm
-                                        />
-                                    </DialogContent>
-                                </Dialog>
-                                {/* Register */}
-                                <Dialog open={isRegisterOpen} onOpenChange={setIsRegisterOpen}>
-                                    <DialogTrigger asChild>
-                                        <Button
-                                            className="text-black inline-flex gap-x-2 text-[14px] font-normal shadow-md shadow-gray-500/30 px-6 py-2 rounded-full hover:brightness-110 transition-all duration-200"
-                                            onClick={() => setIsRegisterOpen(true)}
-                                        >
-                                            <TbSettings2 />
-                                            Register
-                                        </Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="bg-[#F4FFF9] border border-[#1E2C1E] text-black rounded-2xl w-[90%] max-w-[800px]">
-                                        <DialogHeader>
-                                            <VisuallyHidden>
-                                                <DialogTitle className="text-xl font-bold mb-3">
-                                                    Create your account
-                                                </DialogTitle>
-                                            </VisuallyHidden>
-                                        </DialogHeader>
-                                        <RegisterForm onClose={() => setIsRegisterOpen(false)} />
-                                    </DialogContent>
-                                </Dialog>
+                                {/* Login/Register */}
+                                <Link href="/auth">
+                                    <Button
+                                        className="text-white text-[14px] font-normal inline-flex gap-x-2 bg-[#0036da] shadow-md shadow-gray-500/30 px-6 py-2 rounded-full hover:brightness-110 transition-all duration-200 cursor-pointer"
+                                    >
+                                        <LogInIcon className="w-5 h-5" />
+                                        Login / Signup
+                                    </Button>
+                                </Link>
                             </>
                         ) : (
                             // User dropdown
