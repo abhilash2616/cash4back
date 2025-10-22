@@ -11,7 +11,6 @@ import HowCash4BackWork from "@/components/home/HowCash4BackWork"
 import MostPopularBrands from "@/components/home/MostPopularBrands"
 import PopularStoresCategories from "@/components/home/PopularStoresCategories"
 import Superstars from "@/components/home/Superstars"
-// import TabLink from "@/components/home/TabLink"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -132,7 +131,7 @@ const page = () => {
       </section>
       <section className="py-10">
         <div className="mx-auto px-4">
-        <HeaderText heading="Meet Our Superstars" textalign="text-center" />
+          <HeaderText heading="Meet Our Superstars" textalign="text-center" />
           <Superstars />
         </div>
       </section>

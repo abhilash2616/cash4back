@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import AutoBreadcrumb from '@/components/common/AutoBreadcrumb';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useScrollDisable } from '@/hooks/useScrollDisable';
 
 interface Coupon {
     id: string;
@@ -28,132 +29,132 @@ interface Coupon {
 
 // Mock coupon data
 const mockCoupons: { [key: string]: Coupon } = {
-        'amazon-electronics-sale': {
-            id: 'amazon-electronics-sale',
-            title: 'Electronics Sale',
-            description: 'Get extra 10% off on all electronics including smartphones, laptops, tablets, and more. Limited time offer!',
-            code: 'AMAZON10',
-            discount: '10%',
-            store: 'Amazon',
-            expiryDate: '2024-12-31',
-            isActive: true,
-            category: 'Electronics',
-            termsAndConditions: [
-                'Valid on electronics category only',
-                'Minimum order value of ₹1000',
-                'Maximum discount of ₹500',
-                'Cannot be combined with other offers',
-                'Valid till December 31, 2024'
-            ],
-            minOrderValue: '₹1000',
-            maxDiscount: '₹500',
-            applicableOn: ['Smartphones', 'Laptops', 'Tablets', 'Headphones', 'Cameras'],
-            storeLogo: '🛒',
-            storeWebsite: 'amazon.in',
-            usageCount: 15420,
-            successRate: 94
-        },
-        'flipkart-big-billion': {
-            id: 'flipkart-big-billion',
-            title: 'Big Billion Days',
-            description: 'Massive savings during Flipkart&apos;s biggest sale event. Up to 80% off on thousands of products across all categories.',
-            code: 'BIGBILLION',
-            discount: '80%',
-            store: 'Flipkart',
-            expiryDate: '2024-12-31',
-            isActive: true,
-            category: 'General',
-            termsAndConditions: [
-                'Valid on selected products only',
-                'No minimum order value',
-                'Maximum discount varies by product',
-                'Limited quantity available',
-                'Valid till December 31, 2024'
-            ],
-            minOrderValue: 'No minimum',
-            maxDiscount: 'Varies by product',
-            applicableOn: ['All Categories'],
-            storeLogo: '📱',
-            storeWebsite: 'flipkart.com',
-            usageCount: 89230,
-            successRate: 97
-        },
-        'myntra-fashion-sale': {
-            id: 'myntra-fashion-sale',
-            title: 'End of Reason Sale',
-            description: 'Fashion lovers rejoice! Get up to 70% off on your favorite fashion brands. From clothing to accessories, everything is on sale.',
-            code: 'EORS70',
-            discount: '70%',
-            store: 'Myntra',
-            expiryDate: '2024-12-31',
-            isActive: true,
-            category: 'Fashion',
-            termsAndConditions: [
-                'Valid on fashion items only',
-                'Minimum order value of ₹500',
-                'Maximum discount of ₹2000',
-                'Valid on select brands',
-                'Valid till December 31, 2024'
-            ],
-            minOrderValue: '₹500',
-            maxDiscount: '₹2000',
-            applicableOn: ['Clothing', 'Footwear', 'Accessories', 'Bags', 'Watches'],
-            storeLogo: '👗',
-            storeWebsite: 'myntra.com',
-            usageCount: 45670,
-            successRate: 92
-        },
-        'ajio-weekend-special': {
-            id: 'ajio-weekend-special',
-            title: 'Weekend Special',
-            description: 'Make your weekend shopping special with extra 25% off on all items. Perfect time to refresh your wardrobe!',
-            code: 'WEEKEND25',
-            discount: '25%',
-            store: 'Ajio',
-            expiryDate: '2024-12-31',
-            isActive: true,
-            category: 'Fashion',
-            termsAndConditions: [
-                'Valid on all fashion items',
-                'Minimum order value of ₹800',
-                'Maximum discount of ₹1000',
-                'Valid only on weekends',
-                'Valid till December 31, 2024'
-            ],
-            minOrderValue: '₹800',
-            maxDiscount: '₹1000',
-            applicableOn: ['Fashion', 'Beauty', 'Accessories'],
-            storeLogo: '🛍️',
-            storeWebsite: 'ajio.com',
-            usageCount: 12340,
-            successRate: 89
-        },
-        'reliance-digital-mobile': {
-            id: 'reliance-digital-mobile',
-            title: 'Mobile Mania',
-            description: 'Get extra 20% off on all mobile phones and accessories. From budget to premium smartphones, find your perfect device.',
-            code: 'MOBILE20',
-            discount: '20%',
-            store: 'Reliance Digital',
-            expiryDate: '2024-12-31',
-            isActive: true,
-            category: 'Electronics',
-            termsAndConditions: [
-                'Valid on mobile phones only',
-                'Minimum order value of ₹2000',
-                'Maximum discount of ₹5000',
-                'Valid on select models',
-                'Valid till December 31, 2024'
-            ],
-            minOrderValue: '₹2000',
-            maxDiscount: '₹5000',
-            applicableOn: ['Smartphones', 'Mobile Accessories', 'Cases', 'Screen Protectors'],
-            storeLogo: '📺',
-            storeWebsite: 'reliancedigital.com',
-            usageCount: 9870,
-            successRate: 95
-        }
-    };
+    'amazon-electronics-sale': {
+        id: 'amazon-electronics-sale',
+        title: 'Electronics Sale',
+        description: 'Get extra 10% off on all electronics including smartphones, laptops, tablets, and more. Limited time offer!',
+        code: 'AMAZON10',
+        discount: '10%',
+        store: 'Amazon',
+        expiryDate: '2024-12-31',
+        isActive: true,
+        category: 'Electronics',
+        termsAndConditions: [
+            'Valid on electronics category only',
+            'Minimum order value of ₹1000',
+            'Maximum discount of ₹500',
+            'Cannot be combined with other offers',
+            'Valid till December 31, 2024'
+        ],
+        minOrderValue: '₹1000',
+        maxDiscount: '₹500',
+        applicableOn: ['Smartphones', 'Laptops', 'Tablets', 'Headphones', 'Cameras'],
+        storeLogo: '🛒',
+        storeWebsite: 'amazon.in',
+        usageCount: 15420,
+        successRate: 94
+    },
+    'flipkart-big-billion': {
+        id: 'flipkart-big-billion',
+        title: 'Big Billion Days',
+        description: 'Massive savings during Flipkart&apos;s biggest sale event. Up to 80% off on thousands of products across all categories.',
+        code: 'BIGBILLION',
+        discount: '80%',
+        store: 'Flipkart',
+        expiryDate: '2024-12-31',
+        isActive: true,
+        category: 'General',
+        termsAndConditions: [
+            'Valid on selected products only',
+            'No minimum order value',
+            'Maximum discount varies by product',
+            'Limited quantity available',
+            'Valid till December 31, 2024'
+        ],
+        minOrderValue: 'No minimum',
+        maxDiscount: 'Varies by product',
+        applicableOn: ['All Categories'],
+        storeLogo: '📱',
+        storeWebsite: 'flipkart.com',
+        usageCount: 89230,
+        successRate: 97
+    },
+    'myntra-fashion-sale': {
+        id: 'myntra-fashion-sale',
+        title: 'End of Reason Sale',
+        description: 'Fashion lovers rejoice! Get up to 70% off on your favorite fashion brands. From clothing to accessories, everything is on sale.',
+        code: 'EORS70',
+        discount: '70%',
+        store: 'Myntra',
+        expiryDate: '2024-12-31',
+        isActive: true,
+        category: 'Fashion',
+        termsAndConditions: [
+            'Valid on fashion items only',
+            'Minimum order value of ₹500',
+            'Maximum discount of ₹2000',
+            'Valid on select brands',
+            'Valid till December 31, 2024'
+        ],
+        minOrderValue: '₹500',
+        maxDiscount: '₹2000',
+        applicableOn: ['Clothing', 'Footwear', 'Accessories', 'Bags', 'Watches'],
+        storeLogo: '👗',
+        storeWebsite: 'myntra.com',
+        usageCount: 45670,
+        successRate: 92
+    },
+    'ajio-weekend-special': {
+        id: 'ajio-weekend-special',
+        title: 'Weekend Special',
+        description: 'Make your weekend shopping special with extra 25% off on all items. Perfect time to refresh your wardrobe!',
+        code: 'WEEKEND25',
+        discount: '25%',
+        store: 'Ajio',
+        expiryDate: '2024-12-31',
+        isActive: true,
+        category: 'Fashion',
+        termsAndConditions: [
+            'Valid on all fashion items',
+            'Minimum order value of ₹800',
+            'Maximum discount of ₹1000',
+            'Valid only on weekends',
+            'Valid till December 31, 2024'
+        ],
+        minOrderValue: '₹800',
+        maxDiscount: '₹1000',
+        applicableOn: ['Fashion', 'Beauty', 'Accessories'],
+        storeLogo: '🛍️',
+        storeWebsite: 'ajio.com',
+        usageCount: 12340,
+        successRate: 89
+    },
+    'reliance-digital-mobile': {
+        id: 'reliance-digital-mobile',
+        title: 'Mobile Mania',
+        description: 'Get extra 20% off on all mobile phones and accessories. From budget to premium smartphones, find your perfect device.',
+        code: 'MOBILE20',
+        discount: '20%',
+        store: 'Reliance Digital',
+        expiryDate: '2024-12-31',
+        isActive: true,
+        category: 'Electronics',
+        termsAndConditions: [
+            'Valid on mobile phones only',
+            'Minimum order value of ₹2000',
+            'Maximum discount of ₹5000',
+            'Valid on select models',
+            'Valid till December 31, 2024'
+        ],
+        minOrderValue: '₹2000',
+        maxDiscount: '₹5000',
+        applicableOn: ['Smartphones', 'Mobile Accessories', 'Cases', 'Screen Protectors'],
+        storeLogo: '📺',
+        storeWebsite: 'reliancedigital.com',
+        usageCount: 9870,
+        successRate: 95
+    }
+};
 
 const CouponDetailPage = () => {
     const params = useParams();
@@ -161,6 +162,9 @@ const CouponDetailPage = () => {
     const [coupon, setCoupon] = useState<Coupon | null>(null);
     const [loading, setLoading] = useState(true);
     const [copied, setCopied] = useState(false);
+
+    // Disable scroll when loading
+    useScrollDisable(loading);
 
     const copyToClipboard = async () => {
         if (coupon?.code) {
@@ -177,15 +181,15 @@ const CouponDetailPage = () => {
     useEffect(() => {
         const loadCouponData = async () => {
             setLoading(true);
-            
+
             // Simulate API call delay
             await new Promise(resolve => setTimeout(resolve, 1000));
-            
+
             const couponData = mockCoupons[couponId];
             if (couponData) {
                 setCoupon(couponData);
             }
-            
+
             setLoading(false);
         };
 
@@ -293,11 +297,10 @@ const CouponDetailPage = () => {
                                 <div className="text-3xl font-bold text-gray-900 font-mono mb-4">{coupon.code}</div>
                                 <button
                                     onClick={copyToClipboard}
-                                    className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                                        copied
+                                    className={`px-6 py-3 rounded-lg font-medium transition-colors ${copied
                                             ? 'bg-green-600 text-white'
                                             : 'bg-blue-600 text-white hover:bg-blue-700'
-                                    }`}
+                                        }`}
                                 >
                                     {copied ? '✓ Copied!' : 'Copy Code'}
                                 </button>
@@ -375,7 +378,7 @@ const CouponDetailPage = () => {
                                     <div className="text-sm text-gray-600">{coupon.storeWebsite}</div>
                                 </div>
                             </div>
-                            <Link 
+                            <Link
                                 href={`/stores/${coupon.store.toLowerCase().replace(/\s+/g, '-')}`}
                                 className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-center block"
                             >
@@ -390,8 +393,8 @@ const CouponDetailPage = () => {
                                 <div className="text-3xl font-bold text-green-600 mb-2">{coupon.successRate}%</div>
                                 <div className="text-sm text-gray-600 mb-4">Success Rate</div>
                                 <div className="w-full bg-gray-200 rounded-full h-2">
-                                    <div 
-                                        className="bg-green-600 h-2 rounded-full" 
+                                    <div
+                                        className="bg-green-600 h-2 rounded-full"
                                         style={{ width: `${coupon.successRate}%` }}
                                     ></div>
                                 </div>
@@ -406,13 +409,13 @@ const CouponDetailPage = () => {
                 {/* Back to Categories */}
                 <div className="text-center mt-12">
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link 
+                        <Link
                             href="/categories"
                             className="inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors"
                         >
                             ← Back to All Categories
                         </Link>
-                        <Link 
+                        <Link
                             href="/stores"
                             className="inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors"
                         >

@@ -7,6 +7,7 @@ import AutoBreadcrumb from '@/components/common/AutoBreadcrumb';
 import { Skeleton } from '@/components/ui/skeleton';
 import StoreCardSkeleton from '@/components/skeleton/StoreCardSkeleton';
 import CouponCardSkeleton from '@/components/skeleton/CouponCardSkeleton';
+import { useScrollDisable } from '@/hooks/useScrollDisable';
 
 interface Store {
     id: string;
@@ -32,22 +33,22 @@ interface Coupon {
 
 // Category data mapping
 const categoryData: { [key: string]: { name: string; description: string; icon: string } } = {
-        'biggest-sales': { name: 'Biggest Sales', description: 'Get the best deals with maximum cashback', icon: '🔥' },
-        'electronics': { name: 'Mobiles & Electronics', description: 'Latest gadgets with amazing cashback offers', icon: '📱' },
-        'fashion': { name: 'Fashion', description: 'Trendy fashion with great savings', icon: '👗' },
-        'home-kitchen': { name: 'Home & Kitchen', description: 'Everything for your home with cashback', icon: '🏠' },
-        'min-cashback': { name: 'Min 50% Cashback', description: 'Minimum 50% cashback on all purchases', icon: '💰' },
-        'banking-finance': { name: 'Credit Cards', description: 'Best credit card offers and deals', icon: '💳' },
-        'beauty-grooming': { name: 'Beauty & Grooming', description: 'Beauty products with exclusive offers', icon: '💄' },
-        'travel': { name: 'Flights & Hotels', description: 'Travel deals with maximum savings', icon: '✈️' },
-        'food-grocery': { name: 'Food & Grocery', description: 'Daily essentials with cashback', icon: '🛒' },
-        'pharmacy': { name: 'Pharmacy', description: 'Health products with great offers', icon: '💊' },
-        'new-on-ck': { name: 'New on CashKaro', description: 'Latest additions to our platform', icon: '🆕' },
-        'education': { name: 'Education', description: 'Educational courses and materials', icon: '📚' },
-        'loans': { name: 'Loans', description: 'Best loan offers and deals', icon: '🏦' },
-        'health-wellness': { name: 'Health & Wellness', description: 'Health and wellness products', icon: '🏥' },
-        'departmental': { name: 'Departmental', description: 'Departmental store offers', icon: '🏪' },
-    };
+    'biggest-sales': { name: 'Biggest Sales', description: 'Get the best deals with maximum cashback', icon: '🔥' },
+    'electronics': { name: 'Mobiles & Electronics', description: 'Latest gadgets with amazing cashback offers', icon: '📱' },
+    'fashion': { name: 'Fashion', description: 'Trendy fashion with great savings', icon: '👗' },
+    'home-kitchen': { name: 'Home & Kitchen', description: 'Everything for your home with cashback', icon: '🏠' },
+    'min-cashback': { name: 'Min 50% Cashback', description: 'Minimum 50% cashback on all purchases', icon: '💰' },
+    'banking-finance': { name: 'Credit Cards', description: 'Best credit card offers and deals', icon: '💳' },
+    'beauty-grooming': { name: 'Beauty & Grooming', description: 'Beauty products with exclusive offers', icon: '💄' },
+    'travel': { name: 'Flights & Hotels', description: 'Travel deals with maximum savings', icon: '✈️' },
+    'food-grocery': { name: 'Food & Grocery', description: 'Daily essentials with cashback', icon: '🛒' },
+    'pharmacy': { name: 'Pharmacy', description: 'Health products with great offers', icon: '💊' },
+    'new-on-ck': { name: 'New on CashKaro', description: 'Latest additions to our platform', icon: '🆕' },
+    'education': { name: 'Education', description: 'Educational courses and materials', icon: '📚' },
+    'loans': { name: 'Loans', description: 'Best loan offers and deals', icon: '🏦' },
+    'health-wellness': { name: 'Health & Wellness', description: 'Health and wellness products', icon: '🏥' },
+    'departmental': { name: 'Departmental', description: 'Departmental store offers', icon: '🏪' },
+};
 
 const CategoryDetailPage = () => {
     const params = useParams();
@@ -55,6 +56,9 @@ const CategoryDetailPage = () => {
     const [stores, setStores] = useState<Store[]>([]);
     const [coupons, setCoupons] = useState<Coupon[]>([]);
     const [loading, setLoading] = useState(true);
+
+    // Disable scroll when loading
+    useScrollDisable(loading);
 
     const currentCategory = categoryData[categoryId] || { name: 'Category', description: 'Category description', icon: '📦' };
 
@@ -323,40 +327,40 @@ const CategoryDetailPage = () => {
                         {coupons.map((coupon) => (
                             <Link key={coupon.id} href={`/coupons/${coupon.id}`}>
                                 <div className={`bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer ${!coupon.isActive ? 'opacity-50' : ''}`}>
-                                <div className="flex items-start justify-between mb-4">
-                                    <div>
-                                        <h3 className="text-lg font-semibold text-gray-900 mb-1">{coupon.title}</h3>
-                                        <p className="text-sm text-gray-600">{coupon.description}</p>
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div>
+                                            <h3 className="text-lg font-semibold text-gray-900 mb-1">{coupon.title}</h3>
+                                            <p className="text-sm text-gray-600">{coupon.description}</p>
+                                        </div>
+                                        <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
+                                            {coupon.discount}
+                                        </span>
                                     </div>
-                                    <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
-                                        {coupon.discount}
-                                    </span>
-                                </div>
 
-                                <div className="bg-gray-100 p-3 rounded-lg mb-4">
-                                    <div className="flex items-center justify-between">
-                                        <code className="text-sm font-mono">{coupon.code}</code>
-                                        <button
-                                            className={`px-3 py-1 text-xs rounded ${coupon.isActive
-                                                ? 'bg-blue-600 text-white hover:bg-blue-700'
-                                                : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                                                }`}
-                                        >
-                                            Copy
-                                        </button>
+                                    <div className="bg-gray-100 p-3 rounded-lg mb-4">
+                                        <div className="flex items-center justify-between">
+                                            <code className="text-sm font-mono">{coupon.code}</code>
+                                            <button
+                                                className={`px-3 py-1 text-xs rounded ${coupon.isActive
+                                                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                                    : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                                                    }`}
+                                            >
+                                                Copy
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className="flex items-center justify-between text-sm text-gray-500">
-                                    <span>{coupon.store}</span>
-                                    <span>Expires: {coupon.expiryDate}</span>
-                                </div>
-
-                                {!coupon.isActive && (
-                                    <div className="mt-3 text-center">
-                                        <span className="text-red-600 text-sm font-medium">Expired</span>
+                                    <div className="flex items-center justify-between text-sm text-gray-500">
+                                        <span>{coupon.store}</span>
+                                        <span>Expires: {coupon.expiryDate}</span>
                                     </div>
-                                )}
+
+                                    {!coupon.isActive && (
+                                        <div className="mt-3 text-center">
+                                            <span className="text-red-600 text-sm font-medium">Expired</span>
+                                        </div>
+                                    )}
                                 </div>
                             </Link>
                         ))}

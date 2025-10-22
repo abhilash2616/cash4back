@@ -6,7 +6,7 @@ import { ReactNode, useState } from "react"
 import {
     FiStar, FiLayers, FiSmartphone, FiHeadphones, FiMonitor, FiHeart,
     FiShoppingBag, FiCreditCard, FiBookOpen, FiDollarSign, FiTrendingUp,
-    FiChevronDown, FiSearch
+    FiChevronDown
 } from "react-icons/fi"
 import { TbShirt, TbShirtFilled, TbShoe, TbBabyCarriage } from "react-icons/tb"
 import { MdKitchen, MdLocalGroceryStore, MdHealthAndSafety } from "react-icons/md"
