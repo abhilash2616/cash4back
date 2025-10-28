@@ -3,216 +3,55 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import AutoBreadcrumb from '@/components/common/AutoBreadcrumb';
+import TermsAndConditions from '@/components/store/TermsAndConditions';
+import RewardsRatesDialog from '@/components/store/RewardsRatesDialog';
+import StarRating from '@/components/store/StarRating';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useScrollDisable } from '@/hooks/useScrollDisable';
+import { useAuth } from '@/context/AuthProvider';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import '@splidejs/react-splide/css';
+import { allStores, Store } from '@/data/brands';
+import { Tabeldata } from '@/components/store/Tabeldata';
+import ExtraData from '@/components/store/ExtraData';
+import RelatedStore from '@/components/store/RelatedStore';
+import PopularStore from '@/components/store/PopularStore';
+import StoreFaqs from '@/components/store/StoreFaqs';
 
-interface Store {
-    id: string;
-    name: string;
-    logo: string;
-    cashbackRate: string;
-    category: string;
-    isVerified: boolean;
-    description: string;
-    featured: boolean;
-    website: string;
-    rating: number;
-    totalUsers: number;
-    establishedYear: number;
-    headquarters: string;
-    specialties: string[];
-}
 
-interface Coupon {
-    id: string;
-    title: string;
-    description: string;
-    code: string;
-    discount: string;
-    store: string;
-    expiryDate: string;
-    isActive: boolean;
-    category: string;
-}
-
-// Mock store data
-const mockStores: { [key: string]: Store } = {
-    'amazon': {
-        id: 'amazon',
-        name: 'Amazon',
-        logo: '/assets/img/brands/amazon.jpg',
-        cashbackRate: 'Up to 5%',
-        category: 'general',
-        isVerified: true,
-        description: 'Shop everything from electronics to fashion with amazing deals and fast delivery',
-        featured: true,
-        website: 'amazon.in',
-        rating: 4.8,
-        totalUsers: 5000000,
-        establishedYear: 1994,
-        headquarters: 'Seattle, USA',
-        specialties: ['Electronics', 'Books', 'Fashion', 'Home & Kitchen', 'Grocery']
-    },
-    'flipkart': {
-        id: 'flipkart',
-        name: 'Flipkart',
-        logo: '/assets/img/brands/flipkart.png',
-        cashbackRate: 'Up to 4%',
-        category: 'general',
-        isVerified: true,
-        description: 'India\'s leading e-commerce platform with millions of products',
-        featured: true,
-        website: 'flipkart.com',
-        rating: 4.6,
-        totalUsers: 3000000,
-        establishedYear: 2007,
-        headquarters: 'Bangalore, India',
-        specialties: ['Electronics', 'Fashion', 'Home & Kitchen', 'Books', 'Sports']
-    },
-    'myntra': {
-        id: 'myntra',
-        name: 'Myntra',
-        logo: '/assets/img/brands/myntra.jpg',
-        cashbackRate: 'Up to 8%',
-        category: 'fashion',
-        isVerified: true,
-        description: 'India\'s leading fashion destination with latest trends',
-        featured: true,
-        website: 'myntra.com',
-        rating: 4.5,
-        totalUsers: 2000000,
-        establishedYear: 2007,
-        headquarters: 'Bangalore, India',
-        specialties: ['Fashion', 'Beauty', 'Accessories', 'Footwear', 'Lifestyle']
-    },
-    'ajio': {
-        id: 'ajio',
-        name: 'Ajio',
-        logo: '/assets/img/brands/ajio-coupons.jpg',
-        cashbackRate: 'Up to 7%',
-        category: 'fashion',
-        isVerified: true,
-        description: 'Reliance\'s fashion platform with trendy collections',
-        featured: false,
-        website: 'ajio.com',
-        rating: 4.3,
-        totalUsers: 1500000,
-        establishedYear: 2016,
-        headquarters: 'Mumbai, India',
-        specialties: ['Fashion', 'Beauty', 'Accessories', 'Footwear']
-    },
-    'reliance-digital': {
-        id: 'reliance-digital',
-        name: 'Reliance Digital',
-        logo: '/assets/img/brands/reliancedigital-coupons.png',
-        cashbackRate: 'Up to 5%',
-        category: 'electronics',
-        isVerified: true,
-        description: 'Your one-stop destination for all electronics and digital products',
-        featured: true,
-        website: 'reliancedigital.com',
-        rating: 4.4,
-        totalUsers: 1000000,
-        establishedYear: 2007,
-        headquarters: 'Mumbai, India',
-        specialties: ['Electronics', 'Mobile Phones', 'Laptops', 'Home Appliances', 'Gaming']
-    },
-    'nykaa': {
-        id: 'nykaa',
-        name: 'Nykaa',
-        logo: '/assets/img/brands/mama-earth-coupons-hide.jpg',
-        cashbackRate: 'Up to 7%',
-        category: 'beauty',
-        isVerified: true,
-        description: 'India\'s leading beauty and personal care destination',
-        featured: false,
-        website: 'nykaa.com',
-        rating: 4.3,
-        totalUsers: 800000,
-        establishedYear: 2012,
-        headquarters: 'Mumbai, India',
-        specialties: ['Beauty', 'Personal Care', 'Skincare', 'Makeup', 'Hair Care']
-    },
-    'firstcry': {
-        id: 'firstcry',
-        name: 'FirstCry',
-        logo: '/assets/img/brands/firstcry.jpg',
-        cashbackRate: 'Up to 9%',
-        category: 'kids',
-        isVerified: true,
-        description: 'Everything for your little ones - from baby care to kids fashion',
-        featured: false,
-        website: 'firstcry.com',
-        rating: 4.5,
-        totalUsers: 600000,
-        establishedYear: 2010,
-        headquarters: 'Pune, India',
-        specialties: ['Baby Care', 'Kids Fashion', 'Toys', 'Books', 'School Supplies']
-    }
-};
 
 const StoreDetailPage = () => {
     const params = useParams();
+    const router = useRouter();
+    const { user } = useAuth();
     const storeId = params.storeId as string;
     const [store, setStore] = useState<Store | null>(null);
-    const [coupons, setCoupons] = useState<Coupon[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     // Disable scroll when loading
     useScrollDisable(loading);
 
-    // Mock coupons data
-    const generateMockCoupons = (storeName: string): Coupon[] => {
-        const couponTemplates = {
-            'Amazon': [
-                { title: 'Electronics Sale', description: 'Extra 10% off on electronics', code: 'AMAZON10', discount: '10%', category: 'Electronics' },
-                { title: 'Prime Day Deals', description: 'Up to 50% off on Prime Day', code: 'PRIME50', discount: '50%', category: 'General' },
-                { title: 'New User Offer', description: '₹100 off on first order', code: 'NEW100', discount: '₹100', category: 'General' },
-            ],
-            'Flipkart': [
-                { title: 'Big Billion Days', description: 'Up to 80% off on Big Billion Days', code: 'BIGBILLION', discount: '80%', category: 'General' },
-                { title: 'Mobile Deals', description: 'Extra 15% off on smartphones', code: 'MOBILE15', discount: '15%', category: 'Electronics' },
-                { title: 'Fashion Sale', description: '30% off on fashion items', code: 'FASHION30', discount: '30%', category: 'Fashion' },
-            ],
-            'Myntra': [
-                { title: 'End of Reason Sale', description: 'Up to 70% off on fashion', code: 'EORS70', discount: '70%', category: 'Fashion' },
-                { title: 'Beauty Bonanza', description: '25% off on beauty products', code: 'BEAUTY25', discount: '25%', category: 'Beauty' },
-                { title: 'New Arrivals', description: '20% off on new collection', code: 'NEW20', discount: '20%', category: 'Fashion' },
-            ],
-            'Ajio': [
-                { title: 'Ajio Sale', description: 'Up to 60% off on all items', code: 'AJIO60', discount: '60%', category: 'Fashion' },
-                { title: 'Weekend Special', description: 'Extra 25% off this weekend', code: 'WEEKEND25', discount: '25%', category: 'Fashion' },
-            ],
-            'Reliance Digital': [
-                { title: 'Digital Sale', description: 'Up to 40% off on electronics', code: 'DIGITAL40', discount: '40%', category: 'Electronics' },
-                { title: 'Mobile Mania', description: 'Extra 20% off on mobile phones', code: 'MOBILE20', discount: '20%', category: 'Electronics' },
-            ],
-            'Nykaa': [
-                { title: 'Beauty Bonanza', description: 'Up to 50% off on beauty products', code: 'BEAUTY50', discount: '50%', category: 'Beauty' },
-                { title: 'Skincare Special', description: 'Extra 30% off on skincare', code: 'SKIN30', discount: '30%', category: 'Beauty' },
-            ],
-            'FirstCry': [
-                { title: 'Kids Festival', description: 'Up to 60% off on kids products', code: 'KIDS60', discount: '60%', category: 'Kids' },
-                { title: 'Baby Care Sale', description: 'Extra 25% off on baby essentials', code: 'BABY25', discount: '25%', category: 'Baby Care' },
-            ]
-        };
+    // Handle earn rewards button click
+    const handleEarnRewards = () => {
+        if (!user) {
+            // User not logged in, redirect to login page
+            router.push('/auth');
+            return;
+        }
 
-        const coupons = couponTemplates[storeName as keyof typeof couponTemplates] || [];
-
-        return coupons.map((coupon, index) => ({
-            id: `${storeName.toLowerCase()}-coupon-${index + 1}`,
-            title: coupon.title,
-            description: coupon.description,
-            code: coupon.code,
-            discount: coupon.discount,
-            store: storeName,
-            expiryDate: '2024-12-31',
-            isActive: true,
-            category: coupon.category
-        }));
+        // User is logged in, proceed with the action
+        // You can add your logic here for what happens when user clicks earn rewards
+        // For example: redirect to store website, track the click, etc.
+        if (store?.website) {
+            // Open store website in new tab
+            window.open(`https://${store.website}`, '_blank');
+        }
     };
+
 
     useEffect(() => {
         const loadStoreData = async () => {
@@ -221,11 +60,9 @@ const StoreDetailPage = () => {
             // Simulate API call delay
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            const storeData = mockStores[storeId];
+            const storeData = allStores[storeId];
             if (storeData) {
                 setStore(storeData);
-                const storeCoupons = generateMockCoupons(storeData.name);
-                setCoupons(storeCoupons);
             }
 
             setLoading(false);
@@ -287,7 +124,7 @@ const StoreDetailPage = () => {
             <div className="bg-white shadow-sm">
                 <div className="container mx-auto px-4 py-8">
                     <div className="flex items-center space-x-6 mb-4">
-                        <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                        <div className="w-20 h-20 flex items-center justify-center overflow-hidden">
                             <Image
                                 src={store.logo}
                                 alt={store.name}
@@ -298,19 +135,18 @@ const StoreDetailPage = () => {
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center space-x-3 mb-2">
-                                <h1 className="text-3xl font-bold text-gray-900">{store.name}</h1>
                                 {store.isVerified && (
                                     <span className="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">
-                                        ✓ Verified Partner
+                                        Verified Partner
                                     </span>
                                 )}
                                 {store.featured && (
                                     <span className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
-                                        ⭐ Featured
+                                        Featured
                                     </span>
                                 )}
                             </div>
-                            <p className="text-gray-600 text-lg">{store.description}</p>
+                            <p className="text-gray-600 text-md">{store.description}</p>
                         </div>
                         <div className="text-right">
                             <div className="text-3xl font-bold text-green-600 mb-1">{store.cashbackRate}</div>
@@ -325,126 +161,179 @@ const StoreDetailPage = () => {
 
             <div className="container mx-auto px-4 py-8">
                 {/* Store Information */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-                    {/* Main Info */}
-                    <div className="lg:col-span-2">
-                        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-                            <h2 className="text-xl font-bold text-gray-900 mb-4">Store Information</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <span className="text-gray-600">Website:</span>
-                                    <span className="ml-2 font-medium">{store.website}</span>
+                <div className='flex justify-between'>
+                    <div className='w-full md:w-[70%]'>
+                        <div className="">
+                            <div className='flex items-center justify-center mb-6'>
+                                <div className="relative w-full">
+                                    <Splide options={{
+                                        perPage: 1,
+                                        gap: "1rem",
+                                        padding: { left: "2rem", right: "1rem" },
+                                        autoplay: true,
+                                        interval: 5000,
+                                        pauseOnHover: true,
+                                        arrows: false,
+                                        pagination: true,
+                                        classes: {
+                                            pagination: 'rounded-full h-2 w-full flex justify-center items-center absolute bottom-5 left-0 right-0',
+                                            paginationButton: 'h-2 w-5 bg-gray-200 hover:bg-gray-300',
+                                        }
+                                    }}>
+                                        {store.banner.map((banner, index) => (
+                                            <SplideSlide key={index}>
+                                                <Image src={banner} alt={store.name} width={800} height={600} className='w-full h-[600px] object-cover rounded-[20px]' />
+                                            </SplideSlide>
+                                        ))}
+                                        <div className="splide__progress" style={{ height: '4px', backgroundColor: '#e5e7eb', borderRadius: '2px' }}></div>
+                                    </Splide>
                                 </div>
-                                <div>
-                                    <span className="text-gray-600">Established:</span>
-                                    <span className="ml-2 font-medium">{store.establishedYear}</span>
+                            </div>
+                            {/* Main Info */}
+                            <div className="border bg-white border-gray-200 rounded-[20px] p-10 mb-6">
+                                <div className="mb-2">
+                                    <h2 className="text-[20px] font-bold text-gray-900 mb-4">Important Timelines</h2>
+                                    <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+                                        {store.timelineData?.map((item, index) => (
+                                            <div key={index} className='w-full'>
+                                                <button className="flex items-center cursor-pointer text-xs md:text-base font-semibold leading-4 md:leading-6 flex-1 flex-col h-[112px] md:h-[166px] border md:border-[1.5px] border-[#e5e7eb] rounded-[15px] md:py-6 relative shadow-[0_4px_8px_0_rgba(0,0,0,0.08)] md:shadow-[0_6px_12px_0_rgba(0,0,0,0.08)] p-4 md:p-3 w-[80%]">
+                                                    <span className='text-xs md:text-base font-semibold text-center'>
+                                                        <span className='line-clamp-2'>{item.title}</span>
+                                                    </span>
+                                                    <span className='text-[32px] md:text-[48px] text-[#0036da] font-extrabold text-ck-blue leading-8 md:leading-[48px] mt-[10px] mb-[6px] md:mt-[14px] md:mb-[8px]'>{item.value}</span>
+                                                    <span className='text-xs md:text-base font-semibold md:font-extrabold pr-6'>{item.subtitle}</span>
+                                                    <span className='w-7 h-7 md:w-[24px] md:h-[24px] lg:w-[42px] lg:h-[42px] rounded-full bg-white grid place-content-center shadow-[0_2px_4px_0_rgba(0,0,0,0.08)] md:shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] absolute md:right-[12px] md:bottom-[15px] right-[8px] bottom-[10px] border md:border-[1.5px] border-[#e5e7eb]'>
+                                                        <span>
+                                                            <Image src='/assets/svg/arrow-right.svg' alt='clock' width={24} height={24} />
+                                                        </span>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div>
-                                    <span className="text-gray-600">Headquarters:</span>
-                                    <span className="ml-2 font-medium">{store.headquarters}</span>
-                                </div>
-                                <div>
-                                    <span className="text-gray-600">Rating:</span>
-                                    <span className="ml-2 font-medium">{store.rating}/5 ⭐</span>
-                                </div>
-                                <div>
-                                    <span className="text-gray-600">Total Users:</span>
-                                    <span className="ml-2 font-medium">{store.totalUsers.toLocaleString()}</span>
+                            </div>
+
+                            {/* Quick Stats */}
+                            <div className="border bg-white border-gray-200 rounded-[20px] p-10 mb-6">
+                                <div className="">
+                                    <h2 className="text-xl font-bold text-gray-900 mb-4">Important Terms & Conditions</h2>
+                                    <ul className="space-y-4 list-disc list-inside mb-4">
+                                        {store.termsAndConditions?.map((term, index) => (
+                                            <li key={index}>
+                                                {term}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <TermsAndConditions
+                                        storeName={store.name}
+                                        timelineData={store.timelineData}
+                                    />
                                 </div>
                             </div>
                         </div>
-
+                    </div>
+                    <div className='w-full md:w-[28%]'>
                         {/* Specialties */}
-                        <div className="bg-white rounded-lg shadow-sm p-6">
-                            <h2 className="text-xl font-bold text-gray-900 mb-4">Specialties</h2>
-                            <div className="flex flex-wrap gap-2">
-                                {store.specialties.map((specialty, index) => (
-                                    <span key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                                        {specialty}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Quick Stats */}
-                    <div className="lg:col-span-1">
-                        <div className="bg-white rounded-lg shadow-sm p-6">
-                            <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Stats</h2>
-                            <div className="space-y-4">
-                                <div className="text-center p-4 bg-green-50 rounded-lg">
-                                    <div className="text-2xl font-bold text-green-600">{store.cashbackRate}</div>
-                                    <div className="text-sm text-gray-600">Cashback Rate</div>
+                        <div className="bg-white rounded-[20px] shadow-sm p-10 mb-6">
+                            <div className='flex items-center justify-between mb-6'>
+                                <div className='p-4 border border-gray-200 rounded-[10px]'>
+                                    <Image src={store.logo} alt={store.name} width={100} height={100} className='w-full h-[40px] object-contain' />
                                 </div>
-                                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                                    <div className="text-2xl font-bold text-blue-600">{store.rating}</div>
-                                    <div className="text-sm text-gray-600">User Rating</div>
-                                </div>
-                                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                                    <div className="text-2xl font-bold text-purple-600">{store.totalUsers.toLocaleString()}</div>
-                                    <div className="text-sm text-gray-600">Happy Users</div>
+                                <div className='flex items-center gap-2'>
+                                    <StarRating
+                                        storeName={store.name}
+                                        currentRating={store.rating}
+                                        totalUsers={store.totalUsers}
+                                        onRatingSubmit={(rating, review) => {
+                                            console.log(`Rating submitted for ${store.name}:`, { rating, review });
+                                            // Handle rating submission here
+                                        }}
+                                    />
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Available Coupons */}
-                <div className="mb-12">
-                    <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900">Available Coupons</h2>
-                        <span className="text-sm text-gray-500">{coupons.filter(c => c.isActive).length} active coupons</span>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {coupons.map((coupon) => (
-                            <div key={coupon.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300">
-                                <div className="text-center">
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{coupon.title}</h3>
-                                    <p className="text-gray-600 text-sm mb-4">{coupon.description}</p>
-
-                                    <div className="bg-gray-100 rounded-lg p-4 mb-4">
-                                        <div className="text-sm text-gray-600 mb-1">Coupon Code</div>
-                                        <div className="text-xl font-bold text-gray-900 font-mono">{coupon.code}</div>
+                            <div>
+                                <p className='text-lg font-bold text-gray-900 mb-4'>{store.name} Promo Codes</p>
+                                <div className="relative mb-4">
+                                    <div className={`text-sm text-gray-500 transition-all duration-300 ${isExpanded ? '' : 'line-clamp-3'}`}>
+                                        {store.descriptionParagraphs?.map((paragraph, index) => (
+                                            <p key={index} className={index > 0 ? 'mt-2' : ''}>
+                                                {paragraph}
+                                            </p>
+                                        ))}
                                     </div>
-
-                                    <div className="flex items-center justify-between mb-4">
-                                        <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
-                                            {coupon.discount} off
-                                        </span>
-                                        <span className="text-sm text-gray-600">{coupon.category}</span>
-                                    </div>
-
-                                    <div className="text-xs text-gray-500 mb-4">
-                                        Expires: {new Date(coupon.expiryDate).toLocaleDateString()}
-                                    </div>
-
-                                    <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-                                        Copy Code
+                                    {!isExpanded && (
+                                        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+                                    )}
+                                    <button
+                                        onClick={() => setIsExpanded(!isExpanded)}
+                                        className="flex items-center gap-1 mt-3 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors duration-200 group"
+                                    >
+                                        {isExpanded ? (
+                                            <>
+                                                <span>Show Less</span>
+                                                <ChevronUp className="w-4 h-4 transition-transform duration-200 group-hover:-translate-y-0.5" />
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span>Show More</span>
+                                                <ChevronDown className="w-4 h-4 transition-transform duration-200 group-hover:translate-y-0.5" />
+                                            </>
+                                        )}
                                     </button>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
 
-                {/* Back to Categories */}
-                <div className="text-center">
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link
-                            href="/stores"
-                            className="inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-                        >
-                            ← Back to All Stores
-                        </Link>
-                        <Link
-                            href="/categories"
-                            className="inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-                        >
-                            Browse Categories
-                        </Link>
+                            </div>
+                        </div>
+                        <div className="bg-white rounded-[20px] shadow-sm p-10">
+                            <h2 className='text-[30px] font-extrabold text-gray-900 mb-4'>{store.dynamicContent.rewardsText}</h2>
+                            <p className='text-sm text-[#000] font-bold mb-2'>{store.dynamicContent.rewardsDescription}</p>
+                            <RewardsRatesDialog storeName={store.name} />
+                            <button
+                                onClick={handleEarnRewards}
+                                className='w-full bg-[#ff6d1d] text-white py-2 px-4 rounded-lg hover:bg-[#ff6d1d]/80 transition-colors capitalize'
+                            >
+                                {store.dynamicContent.earnRewardsText}
+                            </button>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div className="my-2 bg-gray-200 h-1 w-full shadow-2xs"></div>
+            <div className='container mx-auto px-4 py-8'>
+                <h2 className='font-semibold mb-6 text-[20px]'>{store.dynamicContent.promoHeading}</h2>
+                <Tabeldata />
+                <div className='my-6'>
+                    <ExtraData store={store} />
+                </div>
+                {!user && store.relatedStores && store.relatedStores.length > 0 && (
+                    <div className='mb-6'>
+                        <RelatedStore
+                            stores={store.relatedStores}
+                            title={`Related Stores Like ${store.name}`}
+                            showCashbackRate={true}
+                            columnsCount={5}
+                        />
+                    </div>
+                )}
+                {!user && store.popularStores && store.popularStores.length > 0 && (
+                    <div className='mb-6'>
+                        <PopularStore
+                            stores={store.popularStores}
+                            title={`Popular Stores Like ${store.name}`}
+                            showCashbackRate={true}
+                            columnsCount={5}
+                        />
+                    </div>
+                )}
+                {!user && store.faqs && store.faqs.length > 0 && (
+                    <div className='my-6'>
+                        <StoreFaqs
+                            faqs={store.faqs}
+                            title={`Frequently Asked Questions about ${store.name}`}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import AutoBreadcrumb from '@/components/common/AutoBreadcrumb';
+import PopularStore from '@/components/store/PopularStore';
 
 const StoresPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -13,7 +15,7 @@ const StoresPage = () => {
         {
             id: "amazon",
             name: "Amazon",
-            logo: "🛒",
+            logo: "/assets/img/brands/amazon.jpg",
             cashbackRate: "5%",
             category: "general",
             isVerified: true,
@@ -29,7 +31,7 @@ const StoresPage = () => {
         {
             id: "ajio",
             name: "Ajio",
-            logo: "🛍️",
+            logo: "/assets/img/brands/ajio-coupons.jpg",
             cashbackRate: "7%",
             category: "fashion",
             isVerified: true,
@@ -45,7 +47,7 @@ const StoresPage = () => {
         {
             id: "bigbasket",
             name: "BigBasket",
-            logo: "🛒",
+            logo: "/assets/img/categorie/food-and-grocery.png",
             cashbackRate: "3%",
             category: "grocery",
             isVerified: true,
@@ -61,7 +63,7 @@ const StoresPage = () => {
         {
             id: "bookmyshow",
             name: "BookMyShow",
-            logo: "🎬",
+            logo: "/assets/img/categorie/entertainment-offers.png",
             cashbackRate: "2%",
             category: "entertainment",
             isVerified: true,
@@ -77,7 +79,7 @@ const StoresPage = () => {
         {
             id: "croma",
             name: "Croma",
-            logo: "📱",
+            logo: "/assets/img/bigdiscount/computer.png",
             cashbackRate: "4%",
             category: "electronics",
             isVerified: true,
@@ -93,7 +95,7 @@ const StoresPage = () => {
         {
             id: "dominos",
             name: "Domino's",
-            logo: "🍕",
+            logo: "/assets/img/categorie/food-and-grocery.png",
             cashbackRate: "3%",
             category: "food",
             isVerified: true,
@@ -109,7 +111,7 @@ const StoresPage = () => {
         {
             id: "firstcry",
             name: "FirstCry",
-            logo: "👶",
+            logo: "/assets/img/brands/firstcry.jpg",
             cashbackRate: "9%",
             category: "kids",
             isVerified: true,
@@ -125,7 +127,7 @@ const StoresPage = () => {
         {
             id: "flipkart",
             name: "Flipkart",
-            logo: "📱",
+            logo: "/assets/img/brands/flipkart.png",
             cashbackRate: "4%",
             category: "general",
             isVerified: true,
@@ -141,7 +143,7 @@ const StoresPage = () => {
         {
             id: "grofers",
             name: "Grofers",
-            logo: "🛒",
+            logo: "/assets/img/categorie/food-and-grocery.png",
             cashbackRate: "2%",
             category: "grocery",
             isVerified: true,
@@ -157,7 +159,7 @@ const StoresPage = () => {
         {
             id: "make-my-trip",
             name: "MakeMyTrip",
-            logo: "✈️",
+            logo: "/assets/img/categorie/travel-offers.png",
             cashbackRate: "3%",
             category: "travel",
             isVerified: true,
@@ -173,7 +175,7 @@ const StoresPage = () => {
         {
             id: "myntra",
             name: "Myntra",
-            logo: "👗",
+            logo: "/assets/img/brands/myntra.jpg",
             cashbackRate: "8%",
             category: "fashion",
             isVerified: true,
@@ -189,7 +191,7 @@ const StoresPage = () => {
         {
             id: "nykaa",
             name: "Nykaa",
-            logo: "💄",
+            logo: "/assets/img/categorie/beauty-personal-care-offers.png",
             cashbackRate: "7%",
             category: "beauty",
             isVerified: true,
@@ -205,7 +207,7 @@ const StoresPage = () => {
         {
             id: "paytm-mall",
             name: "Paytm Mall",
-            logo: "🛍️",
+            logo: "/assets/img/categorie/departmental-offers.png",
             cashbackRate: "3%",
             category: "general",
             isVerified: true,
@@ -221,7 +223,7 @@ const StoresPage = () => {
         {
             id: "reliance-digital",
             name: "Reliance Digital",
-            logo: "📺",
+            logo: "/assets/img/brands/reliancedigital-coupons.png",
             cashbackRate: "5%",
             category: "electronics",
             isVerified: true,
@@ -237,7 +239,7 @@ const StoresPage = () => {
         {
             id: "swiggy",
             name: "Swiggy",
-            logo: "🍔",
+            logo: "/assets/img/categorie/food-and-grocery.png",
             cashbackRate: "2%",
             category: "food",
             isVerified: true,
@@ -253,7 +255,7 @@ const StoresPage = () => {
         {
             id: "zomato",
             name: "Zomato",
-            logo: "🍽️",
+            logo: "/assets/img/categorie/food-and-grocery.png",
             cashbackRate: "2%",
             category: "food",
             isVerified: true,
@@ -291,7 +293,7 @@ const StoresPage = () => {
 
         // Filter by search term
         if (searchTerm) {
-            filtered = filtered.filter(store => 
+            filtered = filtered.filter(store =>
                 store.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 store.description.toLowerCase().includes(searchTerm.toLowerCase())
             );
@@ -304,7 +306,7 @@ const StoresPage = () => {
 
         // Filter by letter
         if (selectedLetter !== 'all') {
-            filtered = filtered.filter(store => 
+            filtered = filtered.filter(store =>
                 store.name.charAt(0).toUpperCase() === selectedLetter
             );
         }
@@ -329,51 +331,15 @@ const StoresPage = () => {
                         <p className="text-gray-600">Discover amazing cashback offers from our partner stores</p>
                     </div>
 
-                    {/* Search Bar */}
-                    <div className="mb-6">
-                        <div className="relative max-w-md">
-                            <input
-                                type="text"
-                                placeholder="Search stores..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            />
-                            <svg className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                        </div>
-                    </div>
-
-                    {/* Category Filters */}
-                    <div className="mb-6">
-                        <div className="flex flex-wrap gap-2">
-                            {categories.map((category) => (
-                                <button
-                                    key={category.id}
-                                    onClick={() => setSelectedCategory(category.id)}
-                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                                        selectedCategory === category.id
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                    }`}
-                                >
-                                    {category.label} ({category.count})
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
                     {/* Alphabet Filter */}
                     <div className="mb-6">
                         <div className="flex flex-wrap gap-1">
                             <button
                                 onClick={() => setSelectedLetter('all')}
-                                className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
-                                    selectedLetter === 'all'
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                }`}
+                                className={`px-3 py-2 rounded text-sm font-medium transition-colors ${selectedLetter === 'all'
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    }`}
                             >
                                 All
                             </button>
@@ -381,11 +347,10 @@ const StoresPage = () => {
                                 <button
                                     key={letter}
                                     onClick={() => setSelectedLetter(letter)}
-                                    className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
-                                        selectedLetter === letter
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                    }`}
+                                    className={`px-3 py-2 rounded text-sm font-medium transition-colors ${selectedLetter === letter
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                        }`}
                                 >
                                     {letter}
                                 </button>
@@ -395,7 +360,7 @@ const StoresPage = () => {
                 </div>
             </div>
 
-            {/* Stores Grid */}
+            {/* All Stores Grid */}
             <div className="container mx-auto px-4 py-8">
                 {filteredAndSortedStores.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -404,14 +369,15 @@ const StoresPage = () => {
                                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 cursor-pointer group">
                                     <div className="text-center">
                                         <div className="relative mb-4">
-                                            <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center text-3xl mx-auto group-hover:scale-105 transition-transform duration-300">
-                                                {store.logo}
+                                            <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center mx-auto group-hover:scale-105 transition-transform duration-300 overflow-hidden">
+                                                <Image
+                                                    src={store.logo}
+                                                    alt={`${store.name} logo`}
+                                                    width={64}
+                                                    height={64}
+                                                    className="object-contain w-full h-full"
+                                                />
                                             </div>
-                                            {store.isVerified && (
-                                                <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                                                    <span className="text-white text-xs">✓</span>
-                                                </div>
-                                            )}
                                         </div>
 
                                         <div className="flex items-center justify-center gap-2 mb-2">
@@ -433,8 +399,11 @@ const StoresPage = () => {
                                             <span className="bg-green-50 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
                                                 {store.cashbackRate} cashback
                                             </span>
-                                            <span className="bg-yellow-50 text-yellow-700 px-3 py-1 rounded-full text-xs font-medium">
-                                                {store.rating} ⭐
+                                            <span className="bg-yellow-50 text-yellow-700 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                                                {store.rating}
+                                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                </svg>
                                             </span>
                                         </div>
 
@@ -467,7 +436,9 @@ const StoresPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="text-center">
                             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span className="text-2xl">💰</span>
+                                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                                </svg>
                             </div>
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">Maximum Cashback</h3>
                             <p className="text-gray-600">Get up to 9% cashback on your purchases across all partner stores</p>
@@ -475,7 +446,9 @@ const StoresPage = () => {
 
                         <div className="text-center">
                             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span className="text-2xl">🏪</span>
+                                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
                             </div>
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">Verified Stores</h3>
                             <p className="text-gray-600">All our partner stores are verified and trusted by millions of users</p>
@@ -483,7 +456,9 @@ const StoresPage = () => {
 
                         <div className="text-center">
                             <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span className="text-2xl">🎯</span>
+                                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                </svg>
                             </div>
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">Best Deals</h3>
                             <p className="text-gray-600">Exclusive deals and coupons available only through our platform</p>
@@ -492,29 +467,6 @@ const StoresPage = () => {
                 </div>
             </div>
 
-            {/* CTA Section */}
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-16">
-                <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-3xl font-bold text-white mb-4">Ready to Start Shopping?</h2>
-                    <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                        Join thousands of users who are already saving money with our cashback platform.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link
-                            href="/categories"
-                            className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-                        >
-                            Browse Categories
-                        </Link>
-                        <Link
-                            href="/auth/register"
-                            className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
-                        >
-                            Sign Up Free
-                        </Link>
-                    </div>
-                </div>
-            </div>
         </div>
     );
 };
