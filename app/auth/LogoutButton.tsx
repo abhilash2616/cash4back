@@ -58,7 +58,7 @@ export default function LogoutButton({ children }: LogoutButtonProps) {
     <Button
       onClick={handleLogout}
       variant="default"
-      className="w-full"
+      className="w-full text-red-500 hover:text-red-500 cursor-pointer"
       disabled={loading}
     >
       {loading ? "Logging out..." : "Logout"}

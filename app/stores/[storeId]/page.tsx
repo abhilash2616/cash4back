@@ -136,12 +136,12 @@ const StoreDetailPage = () => {
                         <div className="flex-1">
                             <div className="flex items-center space-x-3 mb-2">
                                 {store.isVerified && (
-                                    <span className="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">
+                                    <span className="bg-green-100 text-green-800 text-[10px] px-3 py-1 rounded-full">
                                         Verified Partner
                                     </span>
                                 )}
                                 {store.featured && (
-                                    <span className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
+                                    <span className="bg-blue-100 text-blue-800 text-[10px] px-3 py-1 rounded-full">
                                         Featured
                                     </span>
                                 )}
@@ -286,12 +286,12 @@ const StoreDetailPage = () => {
                             </div>
                         </div>
                         <div className="bg-white rounded-[20px] shadow-sm p-10">
-                            <h2 className='text-[30px] font-extrabold text-gray-900 mb-4'>{store.dynamicContent.rewardsText}</h2>
+                            <h2 className='text-[30px] font-extrabold text-gray-900 mb-2'>{store.dynamicContent.rewardsText}</h2>
                             <p className='text-sm text-[#000] font-bold mb-2'>{store.dynamicContent.rewardsDescription}</p>
                             <RewardsRatesDialog storeName={store.name} />
                             <button
                                 onClick={handleEarnRewards}
-                                className='w-full bg-[#ff6d1d] text-white py-2 px-4 rounded-lg hover:bg-[#ff6d1d]/80 transition-colors capitalize'
+                                className='w-full bg-[#ff6d1d] text-white py-4 px-4 rounded-[20px] hover:bg-[#ff6d1d]/80 transition-colors capitalize'
                             >
                                 {store.dynamicContent.earnRewardsText}
                             </button>

@@ -8,30 +8,30 @@ import { Button } from "../ui/button";
 
 const Deals = () => {
     const deals = [
-        { img: "/assets/img/flashdeal/Vajor.png", link: "/page1", name: "Biggest Sales" },
-        { img: "/assets/img/flashdeal/Vajor-1.png", link: "/page2", name: "Mobiles & Electronics" },
-        { img: "/assets/img/flashdeal/Vajor-2.png", link: "/page3", name: "Fashion" },
-        { img: "/assets/img/flashdeal/Vajor-3.png", link: "/page4", name: "Home & Kitchen" },
-        { img: "/assets/img/flashdeal/Vajor-4.png", link: "/page5", name: "Min 50% Cashback" },
-        { img: "/assets/img/flashdeal/ascsac.png", link: "/page6", name: "Credit Cards" },
-        { img: "/assets/img/flashdeal/the-man-company.png", link: "/page7", name: "Beauty & Grooming" },
-        { img: "/assets/img/flashdeal/Vajor-5.png", link: "/page8", name: "Flights & Hotels" },
-        { img: "/assets/img/flashdeal/Vajor-6.png", link: "/page9", name: "Food & Grocery" },
-        { img: "/assets/img/flashdeal/Vajor-7.png", link: "/page9", name: "Pharmacy" },
-        { img: "/assets/img/flashdeal/sbi-simply.png", link: "/page9", name: "New on CashKaro" },
-        { img: "/assets/img/flashdeal/Vajor-8.png", link: "/page9", name: "Education" },
-        { img: "/assets/img/flashdeal/Vajor-9.png", link: "/page9", name: "Loans" },
-        { img: "/assets/img/flashdeal/Vajor-10.png", link: "/page9", name: "Health & Wellness" },
-        { img: "/assets/img/flashdeal/Vajor-11.png", link: "/page9", name: "Departmental" },
-        { img: "/assets/img/flashdeal/Vajor-12.png", link: "/page9", name: "Departmental" },
-        { img: "/assets/img/flashdeal/Vajor-13.png", link: "/page9", name: "Departmental" },
-        { img: "/assets/img/flashdeal/Vajor-14.png", link: "/page9", name: "Departmental" },
-        { img: "/assets/img/flashdeal/Vajor-15.png", link: "/page9", name: "Departmental" },
-        { img: "/assets/img/flashdeal/Vajor-16.png", link: "/page9", name: "Departmental" },
-        { img: "/assets/img/flashdeal/Vajor-17.png", link: "/page9", name: "Departmental" },
-        { img: "/assets/img/flashdeal/Vajor-18.png", link: "/page9", name: "Departmental" },
-        { img: "/assets/img/flashdeal/Vajor-19.png", link: "/page9", name: "Departmental" },
-        { img: "/assets/img/flashdeal/Vajor-20.png", link: "/page9", name: "Departmental" },
+        { img: "/assets/img/flashdeal/Vajor.png", link: "/flash-deals/biggest-sales", name: "Biggest Sales" },
+        { img: "/assets/img/flashdeal/Vajor-1.png", link: "/flash-deals/mobiles-electronics", name: "Mobiles & Electronics" },
+        { img: "/assets/img/flashdeal/Vajor-2.png", link: "/flash-deals/fashion", name: "Fashion" },
+        { img: "/assets/img/flashdeal/Vajor-3.png", link: "/flash-deals/home-kitchen", name: "Home & Kitchen" },
+        { img: "/assets/img/flashdeal/Vajor-4.png", link: "/flash-deals/min-50-cashback", name: "Min 50% Cashback" },
+        { img: "/assets/img/flashdeal/ascsac.png", link: "/flash-deals/credit-cards", name: "Credit Cards" },
+        { img: "/assets/img/flashdeal/the-man-company.png", link: "/flash-deals/beauty-grooming", name: "Beauty & Grooming" },
+        { img: "/assets/img/flashdeal/Vajor-5.png", link: "/flash-deals/flights-hotels", name: "Flights & Hotels" },
+        { img: "/assets/img/flashdeal/Vajor-6.png", link: "/flash-deals/food-grocery", name: "Food & Grocery" },
+        { img: "/assets/img/flashdeal/Vajor-7.png", link: "/flash-deals/pharmacy", name: "Pharmacy" },
+        { img: "/assets/img/flashdeal/sbi-simply.png", link: "/flash-deals/new-on-cashkaro", name: "New on CashKaro" },
+        { img: "/assets/img/flashdeal/Vajor-8.png", link: "/flash-deals/education", name: "Education" },
+        { img: "/assets/img/flashdeal/Vajor-9.png", link: "/flash-deals/loans", name: "Loans" },
+        { img: "/assets/img/flashdeal/Vajor-10.png", link: "/flash-deals/health-wellness", name: "Health & Wellness" },
+        { img: "/assets/img/flashdeal/Vajor-11.png", link: "/flash-deals/departmental-1", name: "Departmental" },
+        { img: "/assets/img/flashdeal/Vajor-12.png", link: "/flash-deals/departmental-2", name: "Departmental" },
+        { img: "/assets/img/flashdeal/Vajor-13.png", link: "/flash-deals/departmental-3", name: "Departmental" },
+        { img: "/assets/img/flashdeal/Vajor-14.png", link: "/flash-deals/departmental-4", name: "Departmental" },
+        { img: "/assets/img/flashdeal/Vajor-15.png", link: "/flash-deals/departmental-5", name: "Departmental" },
+        { img: "/assets/img/flashdeal/Vajor-16.png", link: "/flash-deals/departmental-6", name: "Departmental" },
+        { img: "/assets/img/flashdeal/Vajor-17.png", link: "/flash-deals/departmental-7", name: "Departmental" },
+        { img: "/assets/img/flashdeal/Vajor-18.png", link: "/flash-deals/departmental-8", name: "Departmental" },
+        { img: "/assets/img/flashdeal/Vajor-19.png", link: "/flash-deals/departmental-9", name: "Departmental" },
+        { img: "/assets/img/flashdeal/Vajor-20.png", link: "/flash-deals/departmental-10", name: "Departmental" },
     ];
 
     const brands = [
@@ -117,7 +117,7 @@ const Deals = () => {
                                     Grab Deal
                                 </Button>
                             </div>
-                            
+
                         </Link>
                     </SplideSlide>
                 ))}

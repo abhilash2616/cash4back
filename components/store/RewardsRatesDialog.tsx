@@ -21,7 +21,7 @@ const RewardsRatesDialog: React.FC<RewardsRatesDialogProps> = ({
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <button className="text-sm text-[#0036da] font-bold mb-2 cursor-pointer hover:text-[#0036da]/80 transition-colors flex items-center gap-1 group">
+                <button className="text-sm mb-6 text-[#0036da] font-bold cursor-pointer hover:text-[#0036da]/80 transition-colors flex items-center gap-1 group">
                     View Rewards Rates
                     <ChevronRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1 text-[#0036da]" />
                 </button>

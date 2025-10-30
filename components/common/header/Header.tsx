@@ -3,25 +3,19 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useState, useEffect } from "react";
-import { TbUserSquareRounded } from "react-icons/tb";
 import { useAuth } from "@/context/AuthProvider";
-import LogoutButton from "@/app/auth/LogoutButton";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
     RiMenu2Fill,
 } from "react-icons/ri";
-import { LogInIcon, Search } from "lucide-react";
+import {
+    LogInIcon,
+    Search,
+} from "lucide-react";
 import { motion } from "motion/react"
 import Nav from "@/components/common/header/Nav";
+import UserDropdown from "@/components/common/header/UserDropdown";
 
 
 const Header = () => {
@@ -116,33 +110,7 @@ const Header = () => {
                                 </Link>
                             </>
                         ) : (
-                            // User dropdown
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button className="inline-flex gap-x-2 rounded-full shadow px-4 font-normal py-2 capitalize bg-[#1A2819] text-white text-[12px]">
-                                        <TbUserSquareRounded className="w-5 h-5" />
-                                        {user.name || "User"}
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-38">
-                                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem>
-                                        <Link href="/profile" className="w-full block">
-                                            Profile
-                                        </Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <Link href="/orders" className="w-full block">
-                                            My Orders
-                                        </Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem>
-                                        <LogoutButton />
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                            <UserDropdown />
                         )}
                     </div>
                 </div>
