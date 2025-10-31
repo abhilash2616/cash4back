@@ -1,25 +1,32 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import React, { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Star } from 'lucide-react';
 
 interface StarRatingProps {
     storeName: string;
-    currentRating: number;
-    totalUsers: number;
     onRatingSubmit?: (rating: number, review?: string) => void;
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
 }
 
 const StarRating: React.FC<StarRatingProps> = ({
     storeName,
-    currentRating,
-    totalUsers,
-    onRatingSubmit
+    onRatingSubmit,
+    open,
+    onOpenChange
 }) => {
     const [selectedRating, setSelectedRating] = useState(0);
     const [review, setReview] = useState('');
-    const [isOpen, setIsOpen] = useState(false);
+
+    // Reset form when dialog closes
+    useEffect(() => {
+        if (!open) {
+            setSelectedRating(0);
+            setReview('');
+        }
+    }, [open]);
 
     const handleStarClick = (rating: number) => {
         setSelectedRating(rating);
@@ -29,24 +36,15 @@ const StarRating: React.FC<StarRatingProps> = ({
         if (onRatingSubmit) {
             onRatingSubmit(selectedRating, review);
         }
-        setIsOpen(false);
-        setSelectedRating(0);
-        setReview('');
+        onOpenChange(false);
     };
 
     const handleCancel = () => {
-        setIsOpen(false);
-        setSelectedRating(0);
-        setReview('');
+        onOpenChange(false);
     };
 
     return (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-                <button className="flex items-center gap-1 hover:scale-105 transition-transform duration-200">
-                    <Star className="w-6 h-5 text-yellow-400 stroke-yellow-400" />
-                </button>
-            </DialogTrigger>
+        <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-md">
                 <DialogHeader>
                     <DialogTitle className="text-xl font-bold text-gray-900 text-center">
@@ -111,13 +109,6 @@ const StarRating: React.FC<StarRatingProps> = ({
                     </div>
                 </div>
             </DialogContent>
-
-            {/* Current Rating Display */}
-            <div className="mt-2">
-                <p className='text-sm text-gray-500'>
-                    {currentRating} of 5 | {totalUsers.toLocaleString()} Ratings
-                </p>
-            </div>
         </Dialog>
     );
 };

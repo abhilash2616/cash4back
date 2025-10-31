@@ -12,7 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useScrollDisable } from '@/hooks/useScrollDisable';
 import { useAuth } from '@/context/AuthProvider';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Star } from 'lucide-react';
 import '@splidejs/react-splide/css';
 import { allStores, Store } from '@/data/brands';
 import { Tabeldata } from '@/components/store/Tabeldata';
@@ -31,6 +31,7 @@ const StoreDetailPage = () => {
     const [store, setStore] = useState<Store | null>(null);
     const [loading, setLoading] = useState(true);
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isRatingDialogOpen, setIsRatingDialogOpen] = useState(false);
 
     // Disable scroll when loading
     useScrollDisable(loading);
@@ -241,17 +242,33 @@ const StoreDetailPage = () => {
                                     <Image src={store.logo} alt={store.name} width={100} height={100} className='w-full h-[40px] object-contain' />
                                 </div>
                                 <div className='flex items-center gap-2'>
-                                    <StarRating
-                                        storeName={store.name}
-                                        currentRating={store.rating}
-                                        totalUsers={store.totalUsers}
-                                        onRatingSubmit={(rating, review) => {
-                                            console.log(`Rating submitted for ${store.name}:`, { rating, review });
-                                            // Handle rating submission here
-                                        }}
-                                    />
+                                    {/* Star button to open rating dialog */}
+                                    <button
+                                        onClick={() => setIsRatingDialogOpen(true)}
+                                        className="flex items-center gap-1 hover:scale-105 transition-transform duration-200"
+                                    >
+                                        <Star className="w-6 h-5 text-yellow-400 stroke-yellow-400" />
+                                    </button>
+
+                                    {/* Rating display */}
+                                    <div className="mt-2">
+                                        <p className='text-sm text-gray-500'>
+                                            {store.rating} of 5 | {store.totalUsers.toLocaleString()} Ratings
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
+
+                            {/* Rating Dialog Component - Placed outside to be reusable */}
+                            <StarRating
+                                storeName={store.name}
+                                open={isRatingDialogOpen}
+                                onOpenChange={setIsRatingDialogOpen}
+                                onRatingSubmit={(rating, review) => {
+                                    console.log(`Rating submitted for ${store.name}:`, { rating, review });
+                                    // Handle rating submission here
+                                }}
+                            />
                             <div>
                                 <p className='text-lg font-bold text-gray-900 mb-4'>{store.name} Promo Codes</p>
                                 <div className="relative mb-4">
