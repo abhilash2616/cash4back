@@ -333,28 +333,41 @@ const StoresPage = () => {
 
                     {/* Alphabet Filter */}
                     <div className="mb-6">
-                        <div className="flex flex-wrap gap-1">
-                            <button
-                                onClick={() => setSelectedLetter('all')}
-                                className={`px-3 py-2 rounded text-sm font-medium transition-colors ${selectedLetter === 'all'
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                    }`}
-                            >
-                                All
-                            </button>
-                            {alphabet.map((letter) => (
+                        <div className="mb-3">
+                            <h3 className="text-sm font-semibold text-gray-700 mb-2">Filter by Letter</h3>
+                        </div>
+                        <div className="">
+                            <div className="flex flex-wrap gap-2">
                                 <button
-                                    key={letter}
-                                    onClick={() => setSelectedLetter(letter)}
-                                    className={`px-3 py-2 rounded text-sm font-medium transition-colors ${selectedLetter === letter
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    onClick={() => setSelectedLetter('all')}
+                                    className={`px-4 py-2.5 rounded-[10px] text-sm font-semibold transition-all duration-200 shadow-sm cursor-pointer ${selectedLetter === 'all'
+                                        ? 'bg-[#0036da] text-white shadow-md scale-105 rounded-[10px]'
+                                        : 'bg-white text-gray-700 hover:bg-[#0036da] hover:text-white rounded-[10px] hover:shadow-md border border-[#E0E0E0]'
                                         }`}
                                 >
-                                    {letter}
+                                    All
                                 </button>
-                            ))}
+                                {alphabet.map((letter) => {
+                                    const hasStores = stores.some(store =>
+                                        store.name.charAt(0).toUpperCase() === letter
+                                    );
+                                    return (
+                                        <button
+                                            key={letter}
+                                            onClick={() => setSelectedLetter(letter)}
+                                            disabled={!hasStores}
+                                            className={`px-3.5 py-2.5 rounded-[10px] text-sm font-semibold transition-all duration-200 shadow-sm min-w-[2.5rem] ${selectedLetter === letter
+                                                ? 'bg-[#0036da] text-white shadow-md scale-105'
+                                                : hasStores
+                                                    ? 'bg-white text-gray-700 hover:bg-[#0036da] hover:text-white rounded-[10px] hover:shadow-md border border-[#E0E0E0]'
+                                                    : 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-50 border border-[#E0E0E0]'
+                                                }`}
+                                        >
+                                            {letter}
+                                        </button>
+                                    );
+                                })}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -366,10 +379,10 @@ const StoresPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {filteredAndSortedStores.map((store) => (
                             <Link key={store.id} href={`/stores/${store.id}`}>
-                                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 cursor-pointer group">
+                                <div className="bg-white rounded-[20px] md:h-[300px] h-auto shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 cursor-pointer group">
                                     <div className="text-center">
                                         <div className="relative mb-4">
-                                            <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center mx-auto group-hover:scale-105 transition-transform duration-300 overflow-hidden">
+                                            <div className="w-20 h-20 rounded-lg flex items-center justify-center mx-auto group-hover:scale-105 transition-transform duration-300 overflow-hidden">
                                                 <Image
                                                     src={store.logo}
                                                     alt={`${store.name} logo`}

@@ -107,52 +107,80 @@ const CategoriesPage = () => {
                         <div className="relative" ref={dropdownRef}>
                             <button
                                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition-colors"
+                                className="flex items-center gap-2.5 px-4 py-2.5 border border-[#E0E0E0] rounded-[10px] bg-white hover:border-[#0036da] hover:shadow-md transition-all duration-200 shadow-sm group"
                             >
-                                <span className="text-sm text-gray-700">
-                                    Sort by: {sortOptions.find(option => option.value === sortBy)?.label}
+                                <svg className="w-4 h-4 text-gray-500 group-hover:text-[#0036da] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                                </svg>
+                                <span className="text-sm font-medium text-gray-700 group-hover:text-[#0036da] transition-colors">
+                                    Sort: <span className="font-semibold">{sortOptions.find(option => option.value === sortBy)?.label}</span>
                                 </span>
-                                <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg
+                                    className={`w-4 h-4 text-gray-500 group-hover:text-[#0036da] transition-all duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
 
                             {isDropdownOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-                                    {sortOptions.map((option) => (
-                                        <button
-                                            key={option.value}
-                                            onClick={() => {
-                                                setSortBy(option.value);
-                                                setIsDropdownOpen(false);
-                                            }}
-                                            className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors ${sortBy === option.value ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
-                                                }`}
-                                        >
-                                            {option.label}
-                                        </button>
-                                    ))}
+                                <div className="absolute right-0 mt-2 w-56 bg-white border border-[#E0E0E0] rounded-[10px] shadow-xl z-10 overflow-hidden transform transition-all duration-200 ease-out opacity-100 translate-y-0">
+                                    <div className="py-1">
+                                        {sortOptions.map((option, index) => (
+                                            <button
+                                                key={option.value}
+                                                onClick={() => {
+                                                    setSortBy(option.value);
+                                                    setIsDropdownOpen(false);
+                                                }}
+                                                className={`w-full flex items-center justify-between px-4 py-2.5 text-sm transition-all duration-150 ${sortBy === option.value
+                                                    ? 'bg-gradient-to-r from-[#0036da]/10 to-[#0036da]/5 text-[#0036da] font-semibold'
+                                                    : 'text-gray-700 hover:bg-gray-50 font-medium'
+                                                    } ${index === 0 ? '' : 'border-t border-gray-100'}`}
+                                            >
+                                                <span className="flex items-center gap-2">
+                                                    {sortBy === option.value && (
+                                                        <svg className="w-4 h-4 text-[#0036da]" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                        </svg>
+                                                    )}
+                                                    <span>{option.label}</span>
+                                                </span>
+                                                {sortBy === option.value && (
+                                                    <div className="w-2 h-2 rounded-full bg-[#0036da]"></div>
+                                                )}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                             )}
                         </div>
                     </div>
 
                     {/* Tabs Section */}
-                    <div className="border-b border-gray-200">
-                        <nav className="flex space-x-8">
+                    <div className="border-b border-gray-200 overflow-x-auto">
+                        <nav className="flex space-x-1 min-w-max">
                             {tabs.map((tab) => (
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
-                                        ? 'border-blue-500 text-blue-600'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                    className={`relative flex items-center gap-2 py-3 px-4 font-semibold text-sm transition-all duration-200 whitespace-nowrap group ${activeTab === tab.id
+                                        ? 'text-[#0036da]'
+                                        : 'text-gray-500 hover:text-gray-700'
                                         }`}
                                 >
-                                    {tab.label}
-                                    <span className="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs">
+                                    <span className="relative z-10">{tab.label}</span>
+                                    <span className={`relative z-10 px-2.5 py-0.5 rounded-full text-xs font-bold transition-all duration-200 ${activeTab === tab.id
+                                        ? 'bg-[#0036da] text-white shadow-sm'
+                                        : 'bg-gray-100 text-gray-600 group-hover:bg-gray-200'
+                                        }`}>
                                         {tab.count}
                                     </span>
+                                    {activeTab === tab.id && (
+                                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0036da] to-[#0026a0] rounded-t-full shadow-sm"></div>
+                                    )}
                                 </button>
                             ))}
                         </nav>
@@ -166,7 +194,7 @@ const CategoriesPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {filteredAndSortedCategories.map((category) => (
                             <Link key={category.id} href={`/categories/${category.id}`}>
-                                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 cursor-pointer group">
+                                <div className="bg-white rounded-[20px] md:h-[300px] h-auto shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 cursor-pointer group">
                                     <div className="text-center">
                                         <div className="relative mb-4">
                                             <Image
@@ -174,12 +202,12 @@ const CategoriesPage = () => {
                                                 width={80}
                                                 height={80}
                                                 alt={category.name}
-                                                className="w-20 h-20 rounded-lg mx-auto group-hover:scale-105 transition-transform duration-300"
+                                                className="w-20 h-20 rounded-[10px] mx-auto group-hover:scale-105 transition-transform duration-300"
                                             />
                                         </div>
 
                                         <div className="flex items-center justify-center gap-2 mb-2">
-                                            <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                                            <h3 className="text-lg font-semibold text-gray-900 group-hover:text-[#0036da] transition-colors">
                                                 {category.name}
                                             </h3>
                                             {category.isNew && (
@@ -194,10 +222,10 @@ const CategoriesPage = () => {
                                         </p>
 
                                         <div className="flex items-center justify-center gap-2">
-                                            <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">
+                                            <span className="bg-[#0036da] text-white px-3 py-1 rounded-full text-xs font-medium">
                                                 {category.storeCount} stores
                                             </span>
-                                            <span className="bg-orange-50 text-orange-700 px-3 py-1 rounded-full text-xs font-medium">
+                                            <span className="bg-[#0036da] text-white px-3 py-1 rounded-full text-xs font-medium">
                                                 {category.cashback}% cashback
                                             </span>
                                         </div>
@@ -227,7 +255,7 @@ const CategoriesPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="text-center">
                             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <DollarSign className="w-8 h-8 text-green-600" />
+                                <DollarSign className="w-8 h-8 text-[#0036da]" />
                             </div>
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">Maximum Cashback</h3>
                             <p className="text-gray-600">Get up to 9% cashback on your purchases across all categories</p>
@@ -235,7 +263,7 @@ const CategoriesPage = () => {
 
                         <div className="text-center">
                             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <Store className="w-8 h-8 text-blue-600" />
+                                <Store className="w-8 h-8 text-[#0036da]" />
                             </div>
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">Verified Stores</h3>
                             <p className="text-gray-600">All our partner stores are verified and trusted by millions of users</p>
@@ -243,7 +271,7 @@ const CategoriesPage = () => {
 
                         <div className="text-center">
                             <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <Target className="w-8 h-8 text-purple-600" />
+                                <Target className="w-8 h-8 text-[#0036da]" />
                             </div>
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">Best Deals</h3>
                             <p className="text-gray-600">Exclusive deals and coupons available only through our platform</p>

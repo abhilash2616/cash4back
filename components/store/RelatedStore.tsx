@@ -73,7 +73,7 @@ const RelatedStore: React.FC<RelatedStoreProps> = ({
                                 <Link
                                     key={store.id}
                                     href={`/stores/${store.id}`}
-                                    className="group cursor-pointer p-3 rounded-lg hover:bg-gray-50 hover:shadow-md transition-all duration-300 ease-in-out transform hover:scale-[1.02] hover:-translate-y-1 active:scale-[0.98] active:translate-y-0 relative overflow-hidden block"
+                                    className="group cursor-pointer p-3 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-[1.02] hover:-translate-y-1 active:scale-[0.98] active:translate-y-0 relative overflow-hidden block"
                                     style={{
                                         animationDelay: `${(columnIndex * 100) + (storeIndex * 50)}ms`,
                                         animation: 'fadeInUp 0.6s ease-out forwards',

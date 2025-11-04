@@ -71,7 +71,7 @@ const PopularStore: React.FC<PopularStoreProps> = ({
                             {column.map((store, storeIndex) => (
                                 <div
                                     key={store.id}
-                                    className="group cursor-pointer p-3 rounded-lg hover:bg-gray-50 hover:shadow-md transition-all duration-300 ease-in-out transform hover:scale-[1.02] hover:-translate-y-1 active:scale-[0.98] active:translate-y-0 relative overflow-hidden"
+                                    className="group cursor-pointer p-3 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-[1.02] hover:-translate-y-1 active:scale-[0.98] active:translate-y-0 relative overflow-hidden"
                                     onClick={(e) => {
                                         // Create ripple effect
                                         const button = e.currentTarget;

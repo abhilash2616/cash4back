@@ -309,9 +309,9 @@ const CategoryDetailPage = () => {
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
                         {stores.map((store) => (
                             <Link key={store.id} href={`/stores/${store.id}`}>
-                                <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer group">
+                                <div className="bg-white rounded-[20px] md:h-[300px] h-auto shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 cursor-pointer group">
                                     <div className="flex items-center justify-between mb-4">
-                                        <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                                        <div className="w-16 h-16 rounded-[10px] flex items-center justify-center overflow-hidden">
                                             <Image
                                                 src={store.logo}
                                                 alt={store.name}
@@ -321,19 +321,19 @@ const CategoryDetailPage = () => {
                                             />
                                         </div>
                                         {store.isVerified && (
-                                            <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                                            <span className="bg-[#0036da] text-white text-xs px-2 py-1 rounded-full">
                                                 ✓ Verified
                                             </span>
                                         )}
                                     </div>
 
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600">
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-[#0036da]">
                                         {store.name}
                                     </h3>
                                     <p className="text-sm text-gray-600 mb-3 line-clamp-2">{store.description}</p>
 
                                     <div className="flex items-center justify-between">
-                                        <span className="text-green-600 font-bold text-lg">{store.cashbackRate}</span>
+                                        <span className="text-[#0036da] font-bold text-lg">{store.cashbackRate}</span>
                                         <span className="text-sm text-gray-500">cashback</span>
                                     </div>
                                 </div>
@@ -352,23 +352,23 @@ const CategoryDetailPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {coupons.map((coupon) => (
                             <Link key={coupon.id} href={`/coupons/${coupon.id}`}>
-                                <div className={`bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer ${!coupon.isActive ? 'opacity-50' : ''}`}>
+                                <div className={`bg-white rounded-[20px] md:h-[300px] h-auto shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 cursor-pointer ${!coupon.isActive ? 'opacity-50' : ''}`}>
                                     <div className="flex items-start justify-between mb-4">
                                         <div>
                                             <h3 className="text-lg font-semibold text-gray-900 mb-1">{coupon.title}</h3>
                                             <p className="text-sm text-gray-600">{coupon.description}</p>
                                         </div>
-                                        <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
+                                        <span className="bg-[#0036da] text-white text-xs px-2 py-1 rounded-full">
                                             {coupon.discount}
                                         </span>
                                     </div>
 
-                                    <div className="bg-gray-100 p-3 rounded-lg mb-4">
+                                    <div className="bg-gray-100 p-3 rounded-[10px] mb-4">
                                         <div className="flex items-center justify-between">
                                             <code className="text-sm font-mono">{coupon.code}</code>
                                             <button
                                                 className={`px-3 py-1 text-xs rounded ${coupon.isActive
-                                                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                                    ? 'bg-[#0036da] text-white hover:bg-[#0036da]/80'
                                                     : 'bg-gray-400 text-gray-200 cursor-not-allowed'
                                                     }`}
                                             >
