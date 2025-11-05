@@ -1,17 +1,18 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import HeaderText from "@/components/common/HeaderText";
 import AutoBreadcrumb from "@/components/common/AutoBreadcrumb";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { IoTimerOutline } from "react-icons/io5";
+import { Check, Copy, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const FlashDealDetail = () => {
     const params = useParams();
     const dealId = params.dealId as string;
     const [timeLeft, setTimeLeft] = useState(34 * 60 * 60);
+    const [copied, setCopied] = useState(false);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -30,7 +31,16 @@ const FlashDealDetail = () => {
             .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
     };
 
-    // Flash deals data mapping
+    const copyToClipboard = async (code: string) => {
+        try {
+            await navigator.clipboard.writeText(code);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+    };
+
     const flashDealsData: {
         [key: string]: {
             id: string;
@@ -44,6 +54,15 @@ const FlashDealDetail = () => {
             cashback: string;
             validUntil: string;
             terms: string[];
+            couponCode?: string;
+            brandName?: string;
+            brandTagline?: string;
+            keyFeatures?: string[];
+            aboutOffer?: string[];
+            whyChoose?: string[];
+            aboutBrand?: string[];
+            cashbackDetails?: string[];
+            howToGrab?: string[];
         }
     } = {
         'biggest-sales': {
@@ -57,6 +76,38 @@ const FlashDealDetail = () => {
             discountedPrice: "₹899",
             cashback: "5% Cashback",
             validUntil: "Limited Time Offer",
+            couponCode: "BIGSALE70",
+            brandName: "Biggest Sales",
+            brandTagline: "Shop Everything",
+            keyFeatures: ["Products Are 100% Authentic", "Fast Delivery Available"],
+            aboutOffer: [
+                "Up to 70% off on selected items",
+                "5% CashKaro Cashback on all purchases",
+                "Valid on all categories"
+            ],
+            whyChoose: [
+                "100% Authentic Products",
+                "Fast and Secure Delivery",
+                "24/7 Customer Support",
+                "Easy Returns"
+            ],
+            aboutBrand: [
+                "Your trusted shopping destination",
+                "Wide range of products",
+                "Best prices guaranteed",
+                "Secure payment options"
+            ],
+            cashbackDetails: [
+                "Cashback will be tracked within 24-48 hours",
+                "Cashback will be confirmed within 7-10 business days",
+                "Cashback will be credited to your account within 15-20 business days"
+            ],
+            howToGrab: [
+                "Click on 'Grab Deal' button",
+                "You will be redirected to the store",
+                "Shop and checkout as usual",
+                "Cashback will be automatically tracked"
+            ],
             terms: [
                 "Valid on selected items only",
                 "Cashback will be credited within 7-10 business days",
@@ -480,7 +531,6 @@ const FlashDealDetail = () => {
         }
     };
 
-    // Get deal data based on dealId
     const dealData = flashDealsData[dealId] || {
         id: dealId,
         title: "Flash Deal",
@@ -492,6 +542,15 @@ const FlashDealDetail = () => {
         discountedPrice: "₹500",
         cashback: "5% Cashback",
         validUntil: "Limited Time Offer",
+        couponCode: "DEAL500",
+        brandName: "Flash Deal",
+        brandTagline: "Best Offers",
+        keyFeatures: ["Limited Time Offer", "Best Prices"],
+        aboutOffer: ["Special discount available", "Cashback on all purchases"],
+        whyChoose: ["Best prices", "Fast delivery"],
+        aboutBrand: ["Trusted brand", "Quality products"],
+        cashbackDetails: ["Cashback will be tracked within 24-48 hours"],
+        howToGrab: ["Click Grab Deal", "Shop and checkout"],
         terms: [
             "Valid on selected items only",
             "Cashback will be credited within 7-10 business days",
@@ -500,88 +559,180 @@ const FlashDealDetail = () => {
         ]
     };
 
-    // Dynamic breadcrumb labels
     const customLabels = {
         [dealId]: dealData.title
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            {/* Breadcrumb Navigation */}
-            <AutoBreadcrumb
-                className="mb-6"
-                customLabels={customLabels}
-            />
+        <div className="min-h-screen bg-gray-50">
+            <div className="container mx-auto px-4">
+                <AutoBreadcrumb
+                    className="my-6"
+                    customLabels={customLabels}
+                />
+            </div>
+            <div className="relative w-full">
+                <Image
+                    src="/assets/img/flashdeal/flashdeal.png"
+                    alt="Flash Deal Background"
+                    width={1920}
+                    height={800}
+                    className="w-full h-[750px] object-cover"
+                />
 
-            <HeaderText heading={`Flash Deal - ${dealData.title}`} textalign="text-left" />
+                <div className="absolute inset-0 flex flex-col items-center justify-start pt-10">
+                    <h1 className="text-white text-3xl font-extrabold tracking-wide drop-shadow-lg">
+                        FLASH DEAL
+                    </h1>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-                {/* Deal Image */}
-                <div className="relative">
-                    <div className="relative overflow-hidden rounded-xl">
-                        <Image
-                            src={dealData.image}
-                            width={600}
-                            height={400}
-                            alt={dealData.title}
-                            className="w-full h-auto object-cover"
-                        />
-                        <div className="absolute top-4 left-4">
+                    <div className="mt-3 bg-white rounded-full px-6 py-2 flex items-center gap-2 shadow-md">
+                        <IoTimerOutline className="text-gray-700 text-lg" />
+                        <span className="text-gray-800 font-medium">
+                            Ends in {formatTime(timeLeft)}
+                        </span>
+                    </div>
+                    <div className="mt-2 w-[480px] p-6 flex flex-col items-center relative">
+                        <div className="relative w-full flex justify-center">
                             <Image
-                                src={dealData.brandImage}
-                                width={100}
-                                height={60}
-                                alt="Brand"
-                                className="border-2 border-white object-contain bg-white w-[84px] h-12 rounded-lg overflow-hidden"
+                                src={dealData.image}
+                                alt={dealData.title}
+                                width={500}
+                                height={200}
+                                className="mt-3 object-contain"
                             />
-                        </div>
-                        <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-lg font-bold">
-                            {dealData.discount}
+                            <div className="absolute top-[25%] left-[5%] bg-white px-3 py-2 flex items-center gap-2">
+                                <Image
+                                    src={dealData.brandImage}
+                                    alt="brand"
+                                    width={55}
+                                    height={55}
+                                    className="rounded-md"
+                                />
+                                <span className="text-gray-600 text-xs leading-tight">
+                                    For Every <br /> Skin Type
+                                </span>
+                            </div>
                         </div>
                     </div>
+
+
+                    {dealData.couponCode && (
+                        <div className="mt-6 bg-white w-[480px] rounded-2xl shadow-lg p-5 flex items-center justify-between">
+                            <span className="text-gray-600 font-medium">Use Code</span>
+
+                            <div className="border border-gray-300 px-5 py-2 rounded-lg font-bold">
+                                {dealData.couponCode}
+                            </div>
+
+                            <button
+                                onClick={() => copyToClipboard(dealData.couponCode!)}
+                                className="text-blue-600 font-semibold flex items-center gap-1"
+                            >
+                                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                                {copied ? "Copied" : "Copy Code"}
+                            </button>
+                        </div>
+                    )}
+
+                    <button className="mt-6 w-[480px] bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2">
+                        Grab Deal <ArrowRight className="w-5 h-5" />
+                    </button>
                 </div>
+            </div>
 
-                {/* Deal Details */}
-                <div className="space-y-6">
-                    <div>
-                        <h1 className="text-3xl font-bold text-gray-900 mb-2">{dealData.title}</h1>
-                        <p className="text-gray-600 text-lg">{dealData.description}</p>
-                    </div>
 
-                    {/* Timer */}
-                    <div className="bg-white border-2 border-gray-200 rounded-lg p-4 flex items-center gap-3">
-                        <IoTimerOutline className="text-2xl text-red-500" />
-                        <div>
-                            <p className="font-semibold text-gray-900">Deal Ends In:</p>
-                            <p className="text-2xl font-bold text-red-500">{formatTime(timeLeft)}</p>
-                        </div>
-                    </div>
 
-                    {/* Pricing */}
-                    <div className="bg-gray-50 rounded-lg p-6">
-                        <div className="flex items-center gap-4 mb-4">
-                            <span className="text-3xl font-bold text-green-600">₹{dealData.discountedPrice}</span>
-                            <span className="text-xl text-gray-500 line-through">₹{dealData.originalPrice}</span>
-                            <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
-                                {dealData.cashback}
-                            </span>
-                        </div>
-                        <Button className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 text-lg">
-                            Grab This Deal Now
-                        </Button>
-                    </div>
+            <div className="bg-white py-12">
+                <div className="container mx-auto px-4">
+                    <h1 className="text-3xl font-bold text-gray-900 mb-6">
+                        {dealData.brandName || dealData.title}: {dealData.discount} + Extra 10% Off + {dealData.cashback}
+                    </h1>
 
-                    {/* Terms and Conditions */}
-                    <div className="bg-white border rounded-lg p-6">
-                        <h3 className="text-xl font-bold text-gray-900 mb-4">Terms & Conditions</h3>
-                        <ul className="space-y-2">
-                            {dealData.terms.map((term: string, index: number) => (
-                                <li key={index} className="flex items-start gap-2 text-gray-600">
-                                    <span className="text-red-500 mt-1">•</span>
-                                    <span>{term}</span>
+                    {dealData.keyFeatures && dealData.keyFeatures.length > 0 && (
+                        <ul className="space-y-2 mb-8">
+                            {dealData.keyFeatures.map((feature, index) => (
+                                <li key={index} className="flex items-start gap-2 text-gray-700">
+                                    <span className="text-gray-400 mt-1">•</span>
+                                    <span>{feature}</span>
                                 </li>
                             ))}
                         </ul>
+                    )}
+
+                    <div className="space-y-8">
+                        {dealData.aboutOffer && dealData.aboutOffer.length > 0 && (
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900 mb-4">About the Offer</h2>
+                                <ul className="space-y-2">
+                                    {dealData.aboutOffer.map((item, index) => (
+                                        <li key={index} className="flex items-start gap-2 text-gray-700">
+                                            <span className="text-gray-400 mt-1">•</span>
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {dealData.whyChoose && dealData.whyChoose.length > 0 && (
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900 mb-4">
+                                    Why should you choose {dealData.brandName || dealData.title}
+                                </h2>
+                                <ul className="space-y-2">
+                                    {dealData.whyChoose.map((item, index) => (
+                                        <li key={index} className="flex items-start gap-2 text-gray-700">
+                                            <span className="text-gray-400 mt-1">•</span>
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {dealData.aboutBrand && dealData.aboutBrand.length > 0 && (
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900 mb-4">
+                                    About {dealData.brandName || dealData.title}
+                                </h2>
+                                <ul className="space-y-2">
+                                    {dealData.aboutBrand.map((item, index) => (
+                                        <li key={index} className="flex items-start gap-2 text-gray-700">
+                                            <span className="text-gray-400 mt-1">•</span>
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {dealData.cashbackDetails && dealData.cashbackDetails.length > 0 && (
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900 mb-4">CashKaro Cashback Details</h2>
+                                <ul className="space-y-2">
+                                    {dealData.cashbackDetails.map((item, index) => (
+                                        <li key={index} className="flex items-start gap-2 text-gray-700">
+                                            <span className="text-gray-400 mt-1">•</span>
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {dealData.howToGrab && dealData.howToGrab.length > 0 && (
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900 mb-4">How to Grab This Deal</h2>
+                                <ul className="space-y-2">
+                                    {dealData.howToGrab.map((item, index) => (
+                                        <li key={index} className="flex items-start gap-2 text-gray-700">
+                                            <span className="text-gray-400 mt-1">•</span>
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

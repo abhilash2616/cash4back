@@ -309,7 +309,7 @@ const CategoryDetailPage = () => {
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
                         {stores.map((store) => (
                             <Link key={store.id} href={`/stores/${store.id}`}>
-                                <div className="bg-white rounded-[20px] md:h-[300px] h-auto shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 cursor-pointer group">
+                                <div className="bg-white rounded-[20px] md:h-[250px] h-auto shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 cursor-pointer group">
                                     <div className="flex items-center justify-between mb-4">
                                         <div className="w-16 h-16 rounded-[10px] flex items-center justify-center overflow-hidden">
                                             <Image
@@ -321,7 +321,7 @@ const CategoryDetailPage = () => {
                                             />
                                         </div>
                                         {store.isVerified && (
-                                            <span className="bg-[#0036da] text-white text-xs px-2 py-1 rounded-full">
+                                            <span className="bg-[#007510] text-white text-[10px] px-2 py-1 rounded-full">
                                                 ✓ Verified
                                             </span>
                                         )}

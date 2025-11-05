@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { ShoppingCart, Smartphone, Shirt, ShoppingBag, Monitor } from 'lucide-react';
 import AutoBreadcrumb from '@/components/common/AutoBreadcrumb';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useScrollDisable } from '@/hooks/useScrollDisable';
@@ -21,7 +22,7 @@ interface Coupon {
     minOrderValue?: string;
     maxDiscount?: string;
     applicableOn?: string[];
-    storeLogo: string;
+    storeLogo: React.ReactNode;
     storeWebsite: string;
     usageCount: number;
     successRate: number;
@@ -49,7 +50,7 @@ const mockCoupons: { [key: string]: Coupon } = {
         minOrderValue: '₹1000',
         maxDiscount: '₹500',
         applicableOn: ['Smartphones', 'Laptops', 'Tablets', 'Headphones', 'Cameras'],
-        storeLogo: '🛒',
+        storeLogo: <ShoppingCart className="w-8 h-8 text-blue-600" />,
         storeWebsite: 'amazon.in',
         usageCount: 15420,
         successRate: 94
@@ -74,7 +75,7 @@ const mockCoupons: { [key: string]: Coupon } = {
         minOrderValue: 'No minimum',
         maxDiscount: 'Varies by product',
         applicableOn: ['All Categories'],
-        storeLogo: '📱',
+        storeLogo: <Smartphone className="w-8 h-8 text-blue-600" />,
         storeWebsite: 'flipkart.com',
         usageCount: 89230,
         successRate: 97
@@ -99,7 +100,7 @@ const mockCoupons: { [key: string]: Coupon } = {
         minOrderValue: '₹500',
         maxDiscount: '₹2000',
         applicableOn: ['Clothing', 'Footwear', 'Accessories', 'Bags', 'Watches'],
-        storeLogo: '👗',
+        storeLogo: <Shirt className="w-8 h-8 text-blue-600" />,
         storeWebsite: 'myntra.com',
         usageCount: 45670,
         successRate: 92
@@ -124,7 +125,7 @@ const mockCoupons: { [key: string]: Coupon } = {
         minOrderValue: '₹800',
         maxDiscount: '₹1000',
         applicableOn: ['Fashion', 'Beauty', 'Accessories'],
-        storeLogo: '🛍️',
+        storeLogo: <ShoppingBag className="w-8 h-8 text-blue-600" />,
         storeWebsite: 'ajio.com',
         usageCount: 12340,
         successRate: 89
@@ -149,7 +150,7 @@ const mockCoupons: { [key: string]: Coupon } = {
         minOrderValue: '₹2000',
         maxDiscount: '₹5000',
         applicableOn: ['Smartphones', 'Mobile Accessories', 'Cases', 'Screen Protectors'],
-        storeLogo: '📺',
+        storeLogo: <Monitor className="w-8 h-8 text-blue-600" />,
         storeWebsite: 'reliancedigital.com',
         usageCount: 9870,
         successRate: 95
@@ -252,7 +253,7 @@ const CouponDetailPage = () => {
             <div className="bg-white shadow-sm">
                 <div className="container mx-auto px-4 py-8">
                     <div className="flex items-center space-x-6 mb-4">
-                        <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center text-3xl">
+                        <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center">
                             {coupon.storeLogo}
                         </div>
                         <div className="flex-1">
@@ -298,8 +299,8 @@ const CouponDetailPage = () => {
                                 <button
                                     onClick={copyToClipboard}
                                     className={`px-6 py-3 rounded-lg font-medium transition-colors ${copied
-                                            ? 'bg-green-600 text-white'
-                                            : 'bg-blue-600 text-white hover:bg-blue-700'
+                                        ? 'bg-green-600 text-white'
+                                        : 'bg-blue-600 text-white hover:bg-blue-700'
                                         }`}
                                 >
                                     {copied ? '✓ Copied!' : 'Copy Code'}
@@ -370,7 +371,7 @@ const CouponDetailPage = () => {
                         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
                             <h2 className="text-xl font-bold text-gray-900 mb-4">Store Information</h2>
                             <div className="flex items-center space-x-3 mb-4">
-                                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-xl">
+                                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-blue-600">
                                     {coupon.storeLogo}
                                 </div>
                                 <div>
