@@ -7,6 +7,29 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 
 const BigDiscounts = () => {
+  // Helper function to get store ID from brand image path
+  const getStoreIdFromBrandImage = (brandImagePath: string): string => {
+    const brandImageMap: { [key: string]: string } = {
+      "amazon.jpg": "amazon",
+      "amazon": "amazon",
+      "flipkart.png": "flipkart",
+      "flipkart": "flipkart",
+      "reliancedigital.png": "reliance-digital",
+      "reliancedigital": "reliance-digital",
+      "myntra": "myntra",
+      "ajio": "ajio",
+      "nykaa": "nykaa",
+      "firstcry": "firstcry",
+    };
+
+    // Extract filename from path
+    const filename = brandImagePath.split("/").pop()?.toLowerCase() || "";
+    // Remove file extension
+    const nameWithoutExt = filename.replace(/\.(jpg|jpeg|png|gif|webp)$/i, "");
+
+    return brandImageMap[nameWithoutExt] || brandImageMap[filename] || "";
+  };
+
   const deals = [
     { img: "/assets/img/bigdiscount/computer.png", link: "/page1", name: "Biggest Sales" },
     { img: "/assets/img/bigdiscount/washing-machine.png", link: "/page2", name: "Mobiles & Electronics" },
@@ -58,46 +81,52 @@ const BigDiscounts = () => {
         }}
         aria-label="deal Carousel"
       >
-        {deals.map((deal, index) => (
-          <SplideSlide key={index}>
-            <Link
-              href={deal.link}
-              className="flex items-center justify-center overflow-hidden rounded-xl relative w-full h-full cursor-pointer"
-            >
-              <div className="w-full h-full">
-                <Image
-                  src={deal.img}
-                  width={435}
-                  height={343}
-                  alt={`deal ${index + 1}`}
-                  className="w-full h-full object-cover rounded-xl"
-                />
-              </div>
-              <div className="w-full absolute inset-0 z-10">
-                <div className="absolute top-2.5 2xl:top-3 left-2.5 2xl:left-3 rounded-[8px] lg:rounded-[10px] bg-white overflow-hidden ">
-                  {/* Brand Img */}
+        {deals.map((deal, index) => {
+          const brandImage = brands[index]?.img || "";
+          const storeId = getStoreIdFromBrandImage(brandImage);
+          const storeLink = storeId ? `/stores/${storeId}` : deal.link;
+
+          return (
+            <SplideSlide key={index}>
+              <Link
+                href={storeLink}
+                className="flex items-center justify-center overflow-hidden rounded-xl relative w-full h-full cursor-pointer"
+              >
+                <div className="w-full h-full">
                   <Image
-                    src={brands[index]?.img || ""}
-                    width={100}
-                    height={60}
-                    alt={`brand ${index + 1}`}
-                    className="!border-[1.5px] !border-[#F5F7F9] p-[2px] object-contain w-[72px] h-10 lg:w-[84px] lg:h-12 2xl:w-[108px] 2xl:h-[60px] rounded-[8px] lg:rounded-[10px] overflow-hidden "
+                    src={deal.img}
+                    width={435}
+                    height={343}
+                    alt={`deal ${index + 1}`}
+                    className="w-full h-full object-cover rounded-xl"
                   />
-
                 </div>
-                <div className="flex h-8 justify-end absolute top-0 right-0">
-                  <div className=" w-auto h-[18px] md:h-[26px] bg-red-500 rounded-tr-[20px] !px-5 rounded-bl-[20px] !relative flex justify-center items-center z-0">
-                    <p className=" text-white text-[9px] md:text-base  line-clamp-1 font-semibold text-center">Sale Live Now</p>
+                <div className="w-full absolute inset-0 z-10">
+                  <div className="absolute top-2.5 2xl:top-3 left-2.5 2xl:left-3 rounded-[8px] lg:rounded-[10px] bg-white overflow-hidden ">
+                    {/* Brand Img */}
+                    <Image
+                      src={brands[index]?.img || ""}
+                      width={100}
+                      height={60}
+                      alt={`brand ${index + 1}`}
+                      className="!border-[1.5px] !border-[#F5F7F9] p-[2px] object-contain w-[72px] h-10 lg:w-[84px] lg:h-12 2xl:w-[108px] 2xl:h-[60px] rounded-[8px] lg:rounded-[10px] overflow-hidden "
+                    />
+
                   </div>
+                  <div className="flex h-8 justify-end absolute top-0 right-0">
+                    <div className=" w-auto h-[18px] md:h-[26px] bg-red-500 rounded-tr-[20px] !px-5 rounded-bl-[20px] !relative flex justify-center items-center z-0">
+                      <p className=" text-white text-[9px] md:text-base  line-clamp-1 font-semibold text-center">Sale Live Now</p>
+                    </div>
+                  </div>
+                  <Button variant="default" className="absolute bottom-2.5 2xl:bottom-3 right-2.5 2xl:right-3 bg-white rounded-[5px] font-semibold text-[15px] border-none text-blue-500 cursor-pointer">
+                    Grab Deal
+                  </Button>
                 </div>
-                <Button variant="default" className="absolute bottom-2.5 2xl:bottom-3 right-2.5 2xl:right-3 bg-white rounded-[5px] font-semibold text-[15px] border-none text-blue-500 cursor-pointer">
-                  Grab Deal
-                </Button>
-              </div>
 
-            </Link>
-          </SplideSlide>
-        ))}
+              </Link>
+            </SplideSlide>
+          );
+        })}
       </Splide>
     </div>
   );
