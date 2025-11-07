@@ -495,28 +495,11 @@ const TopDealDetail = () => {
                     customLabels={customLabels}
                 />
             </div>
-            <div className="relative w-full">
-                <Image
-                    src="/assets/img/flashdeal/flashdeal.png"
-                    alt="Top Deal Background"
-                    width={1920}
-                    height={800}
-                    className="w-full h-[750px] object-cover"
-                />
+            <div className="w-full">
 
-                <div className="absolute inset-0 flex flex-col items-center justify-start pt-10">
-                    <h1 className="text-white text-3xl font-extrabold tracking-wide drop-shadow-lg">
-                        TOP DEAL
-                    </h1>
-
-                    <div className="mt-3 bg-white rounded-full px-6 py-2 flex items-center gap-2 shadow-md">
-                        <IoTimerOutline className="text-gray-700 text-lg" />
-                        <span className="text-gray-800 font-medium">
-                            Ends in {formatTime(timeLeft)}
-                        </span>
-                    </div>
-                    <div className="mt-2 w-[480px] p-6 flex flex-col items-center relative">
-                        <div className="relative w-full flex justify-center">
+                <div className="flex flex-col items-center justify-start">
+                    <div className="max-w-[480px] p-6 flex flex-col items-center relative">
+                        <div className="w-full flex justify-center">
                             <Image
                                 src={dealData.image}
                                 alt={dealData.title}
@@ -539,26 +522,7 @@ const TopDealDetail = () => {
                         </div>
                     </div>
 
-
-                    {dealData.couponCode && (
-                        <div className="mt-6 bg-white w-[480px] rounded-2xl shadow-lg p-5 flex items-center justify-between">
-                            <span className="text-gray-600 font-medium">Use Code</span>
-
-                            <div className="border border-gray-300 px-5 py-2 rounded-lg font-bold">
-                                {dealData.couponCode}
-                            </div>
-
-                            <button
-                                onClick={() => copyToClipboard(dealData.couponCode!)}
-                                className="text-blue-600 font-semibold flex items-center gap-1"
-                            >
-                                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                                {copied ? "Copied" : "Copy Code"}
-                            </button>
-                        </div>
-                    )}
-
-                    <button className="mt-6 w-[480px] bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2">
+                    <button className="my-6 w-[450px] bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 rounded-[20px] shadow-md hover:shadow-lg transition flex items-center justify-center gap-2">
                         Grab Deal <ArrowRight className="w-5 h-5" />
                     </button>
                 </div>
